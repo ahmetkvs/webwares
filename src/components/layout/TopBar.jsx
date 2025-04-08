@@ -9,7 +9,7 @@ import {
 
 function TopBar() {
   return (
-    <aside className="w-full flex justify-between text-sm py-4 px-4 bg-slate-800 text-white">
+    <aside className="hidden lg:flex w-full justify-between text-sm py-4 px-4 bg-row1third text-white">
       <div className="flex gap-6">
         <span className="flex gap-1">
           <Phone fill="currentColor" />
