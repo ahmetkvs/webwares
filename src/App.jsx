@@ -5,6 +5,7 @@ import Footer from "./components/layout/Footer";
 import HeroSection from "./components/homePage/HeroSection";
 import BrandLogosSection from "./components/homePage/BrandLogosSection/BrandLogosSection";
 import TopOfWeek from "./components/homePage/TopOfWeek";
+import BestSellersSection from "./components/homePage/BestSellersSection";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <HeroSection />
       <BrandLogosSection />
       <TopOfWeek />
+      <BestSellersSection />
       <Footer />
     </>
   );
