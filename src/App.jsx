@@ -4,6 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import HeroSection from "./components/homePage/HeroSection";
 import BrandLogosSection from "./components/homePage/BrandLogosSection/BrandLogosSection";
+import TopOfWeek from "./components/homePage/TopOfWeek";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Navbar />
       <HeroSection />
       <BrandLogosSection />
+      <TopOfWeek />
       <Footer />
     </>
   );

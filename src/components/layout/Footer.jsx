@@ -7,7 +7,7 @@ function Footer() {
       {/* First row: Logo and social icons */}
       <div className="w-4/5 mx-auto flex flex-wrap justify-between items-center gap-4 mb-8">
         {/* Logo */}
-        <h1 className="font-oswald font-bold text-2xl text-gray-800">
+        <h1 className="font-oswald font-bold text-2xl text-row1third">
           WebWares
         </h1>
         {/* Social Icons */}

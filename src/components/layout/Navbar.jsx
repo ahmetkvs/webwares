@@ -15,7 +15,9 @@ function Navbar() {
         {/* --- Left Section (Logo & Desktop Links) --- */}
         <div className="flex items-center">
           {/* Logo */}
-          <h1 className="font-oswald font-semibold text-2xl mr-8">WebWares</h1>
+          <h1 className="font-oswald text-row1third font-semibold text-2xl mr-8">
+            WebWares
+          </h1>
 
           <div className="hidden lg:flex items-center gap-6">
             <a href="#" className="hover:text-black">

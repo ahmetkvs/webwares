@@ -38,8 +38,15 @@ function BrandLogosSection() {
   return (
     <section className="my-16">
       <div className="w-4/5 mx-auto flex flex-col gap-y-8 lg:flex-row items-center lg:justify-between lg:flex-wrap">
-        {brandLogos.map((brand) => {
-          return <CompLogo href={brand.href} alt={brand.alt} src={brand.src} />;
+        {brandLogos.map((brand, index) => {
+          return (
+            <CompLogo
+              key={index}
+              href={brand.href}
+              alt={brand.alt}
+              src={brand.src}
+            />
+          );
         })}
       </div>
     </section>

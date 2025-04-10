@@ -4,7 +4,7 @@ function HeroSection() {
   const heroImageUrl = "/assets/hero/girl.png";
 
   return (
-    <section className="w-full">
+    <section className="w-full my-16">
       <div className="flex flex-col lg:flex-row w-5/6 mx-auto bg-gradient-to-r rounded-3xl from-cyan-300  to-green-200">
         {/*Left Col*/}
         <div className="px-6 py-10 lg:pl-16 lg:py-16 lg:pr-0 text-center lg:text-left w-full flex flex-col lg:w-1/2 gap-6 font-inter">
