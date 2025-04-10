@@ -3,6 +3,7 @@ import TopBar from "./components/layout/TopBar";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import HeroSection from "./components/homePage/HeroSection";
+import BrandLogosSection from "./components/homePage/BrandLogosSection/BrandLogosSection";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <TopBar />
       <Navbar />
       <HeroSection />
+      <BrandLogosSection />
       <Footer />
     </>
   );
