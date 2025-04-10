@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ProductCard from "../Cards/ProductCard";
+import ProductCard from "../Cards/ClothingProductCard";
 import { ChevronUp } from "lucide-react";
 
 const mockProducts = [
@@ -157,7 +157,7 @@ function BestSellersSection() {
 
   return (
     <section className="my-32">
-      <div className="text-center mb-8">
+      <div className="text-center mb-16">
         <h3 className="text-lg text-gray-600 mb-2">Featured Products</h3>
         <h2 className="text-2xl font-bold mb-2">BESTSELLER PRODUCTS</h2>
         <p className="text-sm text-gray-500">
@@ -181,7 +181,7 @@ function BestSellersSection() {
       </div>
 
       {/* Load/Collapse Buttons */}
-      <div className="text-center mt-32 flex justify-center gap-4">
+      <div className="text-center mt-16 flex justify-center gap-4">
         <button
           className="border border-row1third text-row1third px-8 py-2 font-bold rounded hover:bg-row1third hover:text-white transition-colors duration-200"
           onClick={loadMoreItems}
