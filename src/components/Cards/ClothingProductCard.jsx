@@ -1,4 +1,4 @@
-import formatPrice from "../../helper/formatPrice";
+import formatPrice from "../../utils/formatPrice";
 
 function ProductCard({
   imgSrc,

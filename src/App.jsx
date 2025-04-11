@@ -1,29 +1,30 @@
-import { Rocket } from "lucide-react";
-import TopBar from "./components/layout/TopBar";
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import HeroSection from "./components/homePage/HeroSection";
-import BrandLogosSection from "./components/homePage/BrandLogosSection/BrandLogosSection";
-import TopOfWeek from "./components/homePage/TopOfWeek";
-import BestSellersSection from "./components/homePage/BestSellersSection";
-import BestServices from "./components/homePage/BestServicesSection/BestServicesSection";
-import FeaturedProductsSection from "./components/homePage/FeaturedProductsSection";
-import FeaturedPostsSection from "./components/homePage/FeaturedPostsSection";
+import { Switch, Route } from "react-router-dom";
+import DefaultLayout from "./layouts/DefaultLayout";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <>
-      <TopBar />
-      <Navbar />
-      <HeroSection />
-      <BrandLogosSection />
-      <TopOfWeek />
-      <BestSellersSection />
-      <FeaturedProductsSection />
-      <BestServices />
-      <FeaturedPostsSection />
-      <Footer />
-    </>
+    <Switch>
+      <Route exact path="/">
+        <DefaultLayout>
+          <HomePage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/test">
+        <DefaultLayout>
+          <h1>This is a router test</h1>
+        </DefaultLayout>
+      </Route>
+
+      {/*Catch all 404 route */}
+      <Route path="*">
+        <DefaultLayout>
+          {/* 404 Page */}
+          <h1 className="text-center text-5xl">404</h1>
+        </DefaultLayout>
+      </Route>
+    </Switch>
   );
 }
 

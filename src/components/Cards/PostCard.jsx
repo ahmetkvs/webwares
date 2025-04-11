@@ -9,7 +9,7 @@ import {
   Pickaxe,
   StepForward,
 } from "lucide-react";
-import formatPrice from "../../helper/formatPrice";
+import formatPrice from "../../utils/formatPrice";
 
 function PostCard({ post }) {
   const {
@@ -121,7 +121,7 @@ function PostCard({ post }) {
         </div>
         {/* Learn More*/}
         <a
-          className="w-full sm:w-auto self-start flex gap-2 font-bold text-[#23a6f0] px-4 py-2 border 
+          className="w-full sm:w-auto self-start flex mt-8 gap-2 font-bold text-[#23a6f0] px-4 py-2 border 
                        border-[#23a6f0] rounded-3xl justify-center items-center
                        hover:bg-[#23a6f0] hover:text-white transition-colors duration-200"
           href={learnMoreLink}

@@ -1,5 +1,5 @@
 import { CirclePlay, Facebook, Instagram, Twitter } from "lucide-react";
-import EmailSubscribe from "../inputs/EmailSubsribe";
+import EmailSubscribe from "../components/inputs/EmailSubsribe";
 
 function Footer() {
   return (
