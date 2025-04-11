@@ -1,9 +1,4 @@
-const formatPrice = (price) => {
-  if (typeof price !== "number" || isNaN(price)) {
-    return "$--.--";
-  }
-  return `$${price.toFixed(2)}`;
-};
+import formatPrice from "../../helper/formatPrice";
 
 function ProductCard({
   imgSrc,

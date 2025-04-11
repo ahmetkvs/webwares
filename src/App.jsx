@@ -7,6 +7,8 @@ import BrandLogosSection from "./components/homePage/BrandLogosSection/BrandLogo
 import TopOfWeek from "./components/homePage/TopOfWeek";
 import BestSellersSection from "./components/homePage/BestSellersSection";
 import BestServices from "./components/homePage/BestServicesSection/BestServicesSection";
+import FeaturedProductsSection from "./components/homePage/FeaturedProductsSection";
+import FeaturedPostsSection from "./components/homePage/FeaturedPostsSection";
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
       <BrandLogosSection />
       <TopOfWeek />
       <BestSellersSection />
+      <FeaturedProductsSection />
       <BestServices />
+      <FeaturedPostsSection />
       <Footer />
     </>
   );

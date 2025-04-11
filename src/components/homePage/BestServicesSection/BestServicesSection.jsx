@@ -4,7 +4,7 @@ import Service from "./Service";
 function BestServices() {
   return (
     <section className="my-32 w-full">
-      <div className="text-center mb-16">
+      <div className="text-center mb-16 w-3/5 mx-auto">
         <h3 className="text-lg text-gray-600 mb-2">Our Top-Secret Stash</h3>
         <h2 className="text-2xl font-bold mb-2">THE BEST SERVICES</h2>
         <p className="text-sm text-gray-500">
