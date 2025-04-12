@@ -1,14 +1,30 @@
-import { Rocket } from "lucide-react";
+import { Switch, Route } from "react-router-dom";
+import DefaultLayout from "./layouts/DefaultLayout";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <div>
-      <h1 className="text-6xl mb-4">Coming Soon!</h1>
-      <p className="text-xl mb-6">
-        We're working hard to bring you something amazing!
-      </p>
-      <Rocket color="black" size={96} />
-    </div>
+    <Switch>
+      <Route exact path="/">
+        <DefaultLayout>
+          <HomePage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/test">
+        <DefaultLayout>
+          <h1>This is a router test</h1>
+        </DefaultLayout>
+      </Route>
+
+      {/*Catch all 404 route */}
+      <Route path="*">
+        <DefaultLayout>
+          {/* 404 Page */}
+          <h1 className="text-center text-5xl">404</h1>
+        </DefaultLayout>
+      </Route>
+    </Switch>
   );
 }
 
