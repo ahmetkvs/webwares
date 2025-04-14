@@ -22,7 +22,6 @@ function App() {
       {/*Catch all 404 route */}
       <Route path="*">
         <DefaultLayout>
-          {/* 404 Page */}
           <ErrorPage />
         </DefaultLayout>
       </Route>
