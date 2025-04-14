@@ -1,17 +1,24 @@
 import { useState } from "react";
 import { User, Search, ShoppingCart, Heart, Menu, X } from "lucide-react";
 
-function Navbar() {
+function Navbar({ isHome }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
   }
 
+  const homeNavbarClass =
+    "max-w-full flex justify-between items-center my-4 mx-4";
+  const otherNavbarClass =
+    "lg:w-4/5 flex justify-between items-center my-4 lg:mx-auto mx-4 text-sm";
+
+  let iconSize = isHome ? 30 : 24;
+
   return (
     <>
       {/* --- Navbar --- */}
-      <nav className="max-w-full flex justify-between items-center my-4 mx-4">
+      <nav className={isHome ? homeNavbarClass : otherNavbarClass}>
         {/* --- Left Section (Logo & Desktop Links) --- */}
         <div className="flex items-center">
           {/* Logo */}
@@ -44,24 +51,24 @@ function Navbar() {
         {/* --- Right Section (Icons & Mobile Hamburger) --- */}
         <div className="flex items-center gap-4 lg:gap-5">
           <span className="flex items-center gap-2 cursor-pointer">
-            <User size={30} />
+            <User size={iconSize} />
             <p className="text-sm hidden lg:block">Login / Register</p>
           </span>
           <span className="flex items-center cursor-pointer">
-            <Search size={30} />
+            <Search size={iconSize} />
           </span>
           <span className="flex items-center gap-2 cursor-pointer">
-            <ShoppingCart size={30} />
+            <ShoppingCart size={iconSize} />
             <p className="text-xs hidden lg:block">1</p>
           </span>
           <span className="flex items-center gap-2 cursor-pointer">
-            <Heart size={30} />
+            <Heart size={iconSize} />
             <p className="hidden lg:block text-xs">1</p>
           </span>
 
           {/* Hamburger Button */}
           <button onClick={toggleMenu} className="ml-2 block lg:hidden">
-            {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+            {isMenuOpen ? <X size={iconSize} /> : <Menu size={iconSize} />}
           </button>
         </div>
       </nav>

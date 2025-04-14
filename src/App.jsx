@@ -1,6 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
 import HomePage from "./pages/HomePage";
+import ShopPage from './pages/ShopPage'
 
 function App() {
   return (
@@ -11,9 +12,9 @@ function App() {
         </DefaultLayout>
       </Route>
 
-      <Route path="/test">
+      <Route path="/shop">
         <DefaultLayout>
-          <h1>This is a router test</h1>
+          <ShopPage/>
         </DefaultLayout>
       </Route>
 
