@@ -1,6 +1,14 @@
 import { ChevronRight } from "lucide-react";
 
 function ShopHero() {
+  const categories = [
+    { name: "CLOTHS", items: 5, bg: "bg-gray-300" },
+    { name: "CLOTHS", items: 5, bg: "bg-blue-300" },
+    { name: "CLOTHS", items: 5, bg: "bg-pink-300" },
+    { name: "CLOTHS", items: 5, bg: "bg-teal-300" },
+    { name: "CLOTHS", items: 5, bg: "bg-purple-300" },
+  ];
+
   return (
     <section className="bg-[#FAFAFA]">
       <div className="w-4/5 mx-auto">
@@ -12,27 +20,18 @@ function ShopHero() {
             <p className="text-gray-400">Shop</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-x-6 gap-y-10 text-white">
-          <div className="w-[205px] h-[223px] bg-orange-300 flex flex-col justify-center items-center">
-            <h3 className="font-bold">CLOTHS</h3>
-            <p className="text-sm">5 items</p>
-          </div>
-          <div className="w-[205px] h-[223px] bg-orange-400 flex flex-col justify-center items-center">
-            <h3 className="font-bold">CLOTHS</h3>
-            <p className="text-sm">5 items</p>
-          </div>
-          <div className="w-[205px] h-[223px] bg-orange-500 flex flex-col justify-center items-center">
-            <h3 className="font-bold">CLOTHS</h3>
-            <p className="text-sm">5 items</p>
-          </div>
-          <div className="w-[205px] h-[223px] bg-orange-600 flex flex-col justify-center items-center">
-            <h3 className="font-bold">CLOTHS</h3>
-            <p className="text-sm">5 items</p>
-          </div>
-          <div className="w-[205px] h-[223px] bg-orange-700 flex flex-col justify-center items-center">
-            <h3 className="font-bold">CLOTHS</h3>
-            <p className="text-sm">5 items</p>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-2">
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              className={`relative ${category.bg} aspect-square overflow-hidden`}
+            >
+              <div className="relative z-10 h-full flex flex-col justify-center items-center p-4 text-center text-white">
+                <h3 className="font-bold text-xl">{category.name}</h3>
+                <p className="text-sm mt-1">{category.items} items</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
