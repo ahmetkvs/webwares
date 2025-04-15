@@ -13,12 +13,12 @@ import DefaultButton from "../buttons/DefaultButton";
 
 function ProductDetailSection({ product }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const images = [
     `https://picsum.photos/id/${product.id + 10}/800/800`,
     `https://picsum.photos/id/${product.id + 20}/800/800`,
     `https://picsum.photos/id/${product.id + 30}/800/800`,
     `https://picsum.photos/id/${product.id + 40}/800/800`,
+    `https://picsum.photos/id/${product.id + 50}/800/800`,
   ];
   const totalImages = images.length;
 
