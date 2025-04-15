@@ -1,7 +1,15 @@
+import ShopHero from "../components/shopSections/ShopHero";
+import ShopProductViewSection from "../components/shopSections/ShopProductViewSection";
+import BrandLogosSection from "../components/homeSections/BrandLogosSection/BrandLogosSection";
+
 function ShopPage() {
-    return (<>
-    <h1>Shop Page</h1>
-    </>);
+  return (
+    <>
+      <ShopHero />
+      <ShopProductViewSection />
+      <BrandLogosSection />
+    </>
+  );
 }
 
 export default ShopPage;
