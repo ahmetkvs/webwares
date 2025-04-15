@@ -1,4 +1,3 @@
-import { Section } from "lucide-react";
 import CompLogo from "./CompLogo";
 
 const brandLogos = [

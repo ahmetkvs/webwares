@@ -1,6 +1,8 @@
 import { Switch, Route } from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
 import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/ShopPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -11,17 +13,16 @@ function App() {
         </DefaultLayout>
       </Route>
 
-      <Route path="/test">
+      <Route path="/shop">
         <DefaultLayout>
-          <h1>This is a router test</h1>
+          <ShopPage />
         </DefaultLayout>
       </Route>
 
       {/*Catch all 404 route */}
       <Route path="*">
         <DefaultLayout>
-          {/* 404 Page */}
-          <h1 className="text-center text-5xl">404</h1>
+          <ErrorPage />
         </DefaultLayout>
       </Route>
     </Switch>

@@ -1,11 +1,11 @@
 import TopBar from "./TopBar";
 import Navbar from "./Navbar";
 
-function Header() {
+function Header(props) {
   return (
     <header className="sticky bg-white top-0 z-50">
-      <TopBar />
-      <Navbar />
+      <TopBar isHome={props.isHome} />
+      <Navbar isHome={props.isHome} />
     </header>
   );
 }

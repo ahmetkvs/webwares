@@ -1,11 +1,11 @@
-import HeroSection from "../components/sections/HeroSection";
-import BestSellersSection from "../components/sections/BestSellersSection";
-import FeaturedProductsSection from "../components/sections/FeaturedProductsSection";
-import TopOfWeek from "../components/sections/TopOfWeek";
-import FeaturedPostsSection from "../components/sections/FeaturedPostsSection";
+import HeroSection from "../components/homeSections/HeroSection";
+import BestSellersSection from "../components/homeSections/BestSellersSection";
+import FeaturedProductsSection from "../components/homeSections/FeaturedProductsSection";
+import TopOfWeek from "../components/homeSections/TopOfWeek";
+import FeaturedPostsSection from "../components/homeSections/FeaturedPostsSection";
 
-import BestServicesSection from "../components/sections/BestServicesSection/BestServicesSection";
-import BrandLogosSection from "../components/sections/BrandLogosSection/BrandLogosSection";
+import BestServicesSection from "../components/homeSections/BestServicesSection/BestServicesSection";
+import BrandLogosSection from "../components/homeSections/BrandLogosSection/BrandLogosSection";
 
 function HomePage() {
   return (

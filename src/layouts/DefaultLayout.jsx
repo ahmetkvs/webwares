@@ -1,12 +1,13 @@
+import { useLocation } from "react-router-dom";
 import Footer from "./Footer";
-import Navbar from "./Navbar";
-import TopBar from "./TopBar";
+import Header from "./Header";
 
 function DefaultLayout({ children }) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
   return (
     <>
-      <TopBar />
-      <Navbar />
+      <Header isHome={isHome} />
       <main>{children}</main>
       <Footer />
     </>
