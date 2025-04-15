@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function ShopHero() {
   const categories = [
@@ -15,7 +16,9 @@ function ShopHero() {
         <div className="flex justify-between py-8 mx-8">
           <h2 className="text-row1third font-semibold text-2xl">Shop</h2>
           <div className="flex gap-2">
-            <p className="font-bold text-black">Home</p>
+            <Link to="/" className="font-bold text-black">
+              Home
+            </Link>
             <ChevronRight className="text-gray-400" />
             <p className="text-gray-400">Shop</p>
           </div>

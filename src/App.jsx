@@ -3,6 +3,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
 import ErrorPage from "./pages/ErrorPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 function App() {
   return (
@@ -10,6 +11,12 @@ function App() {
       <Route exact path="/">
         <DefaultLayout>
           <HomePage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/shop/product/:productId">
+        <DefaultLayout>
+          <ProductDetailPage />
         </DefaultLayout>
       </Route>
 

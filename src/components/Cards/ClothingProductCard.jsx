@@ -1,6 +1,8 @@
 import formatPrice from "../../utils/formatPrice";
+import { Link } from "react-router-dom";
 
 function ProductCard({
+  id,
   imgSrc,
   category,
   title,
@@ -20,61 +22,63 @@ function ProductCard({
   const isList = variant === "list";
 
   return (
-    <div
-      className={`${
-        isList
-          ? "flex flex-col sm:flex-row items-center gap-6 text-left p-4 border rounded-lg shadow-sm"
-          : "flex flex-col text-center gap-4"
-      }`}
-    >
-      {/* Image*/}
-      <img
-        className={`object-cover ${
-          isList
-            ? "w-[183px] h-[238px] sm:w-[150px] sm:h-[200px]"
-            : "lg:w-[183px] lg:h-[238px] w-full h-auto mx-auto"
-        }`}
-        src={imgSrc}
-        alt={`${title} - ${category}`}
-      />
-      {/* Text Content */}
+    <Link to={`/shop/product/${id}`} className="hover:bg-slate-100">
       <div
-        className={`flex flex-col gap-2 ${
-          isList ? "items-start" : "items-center"
+        className={`${
+          isList
+            ? "flex flex-col sm:flex-row items-center gap-6 text-left p-4 border rounded-lg shadow-sm"
+            : "flex flex-col text-center gap-4"
         }`}
       >
-        <h3 className="text font-bold">{title}</h3>
-        <p className="text text-gray-600">{category}</p>
+        {/* Image*/}
+        <img
+          className={`object-cover ${
+            isList
+              ? "w-[183px] h-[238px] sm:w-[150px] sm:h-[200px]"
+              : "lg:w-[183px] lg:h-[238px] w-full h-auto mx-auto"
+          }`}
+          src={imgSrc}
+          alt={`${title} - ${category}`}
+        />
+        {/* Text Content */}
+        <div
+          className={`flex flex-col gap-2 ${
+            isList ? "items-start" : "items-center"
+          }`}
+        >
+          <h3 className="text font-bold">{title}</h3>
+          <p className="text text-gray-600">{category}</p>
 
-        {/* Price Area */}
-        <div className="flex items-center gap-2">
-          <span
-            className={` ${
-              discountPercantage > 0
-                ? "line-through text-gray-400"
-                : "text-gray-400"
-            }`}
-          >
-            {formatPrice(originalPrice)}
-          </span>
-          {discountedPrice !== null && (
-            <span className="text-teal-700 font-bold">
-              {formatPrice(discountedPrice)}
+          {/* Price Area */}
+          <div className="flex items-center gap-2">
+            <span
+              className={` ${
+                discountPercantage > 0
+                  ? "line-through text-gray-400"
+                  : "text-gray-400"
+              }`}
+            >
+              {formatPrice(originalPrice)}
             </span>
-          )}
-        </div>
+            {discountedPrice !== null && (
+              <span className="text-teal-700 font-bold">
+                {formatPrice(discountedPrice)}
+              </span>
+            )}
+          </div>
 
-        <div className="flex gap-1.5">
-          {colorsArray.map((color, index) => (
-            <div
-              className="w-4 h-4 rounded-full border border-gray-200"
-              key={index}
-              style={{ backgroundColor: color }}
-            ></div>
-          ))}
+          <div className="flex gap-1.5">
+            {colorsArray.map((color, index) => (
+              <div
+                className="w-4 h-4 rounded-full border border-gray-200"
+                key={index}
+                style={{ backgroundColor: color }}
+              ></div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

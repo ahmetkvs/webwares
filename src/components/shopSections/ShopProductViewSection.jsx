@@ -134,10 +134,11 @@ function ShopProductViewSection() {
       {/*Top Controls Bar End*/}
       <div className="my-16">
         <div className={viewType === "grid" ? gridViewClass : listViewClass}>
-          {currentProducts.map((product, index) => {
+          {currentProducts.map((product) => {
             return (
               <ProductCard
-                key={index}
+                key={product.id}
+                id={product.id}
                 imgSrc={product.imgSrc}
                 category={product.category}
                 title={product.title}
