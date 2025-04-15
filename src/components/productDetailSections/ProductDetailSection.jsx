@@ -18,7 +18,6 @@ function ProductDetailSection({ product }) {
     `https://picsum.photos/id/${product.id + 20}/800/800`,
     `https://picsum.photos/id/${product.id + 30}/800/800`,
     `https://picsum.photos/id/${product.id + 40}/800/800`,
-    `https://picsum.photos/id/${product.id + 50}/800/800`,
   ];
   const totalImages = images.length;
 
