@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
 import ErrorPage from "./pages/ErrorPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   return (
@@ -17,6 +18,12 @@ function App() {
       <Route path="/shop/product/:productId">
         <DefaultLayout>
           <ProductDetailPage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/contact">
+        <DefaultLayout>
+          <ContactPage />
         </DefaultLayout>
       </Route>
 
