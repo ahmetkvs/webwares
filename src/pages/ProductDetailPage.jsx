@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { mockProducts } from "../data/data";
 import ProductDetailSection from "../components/productDetailSections/ProductDetailSection";
 import TabbedInformationSection from "../components/productDetailSections/TabbedInformationSection/TabbedInformationSection";
+import BestsellerProductsSection from "../components/productDetailSections/BestsellerProductsSection";
+import BrandLogosSection from "../components/homeSections/BrandLogosSection/BrandLogosSection";
 
 function ProductDetailPage() {
   const params = useParams();
@@ -21,6 +23,8 @@ function ProductDetailPage() {
     <>
       <ProductDetailSection product={product} />
       <TabbedInformationSection product={product} />
+      <BestsellerProductsSection />
+      <BrandLogosSection />
     </>
   );
 }

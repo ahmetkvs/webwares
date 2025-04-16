@@ -126,7 +126,7 @@ function ReviewsTab() {
             onClick={handleLoadMore}
             className="border border-blue-600 text-blue-600 px-6 py-2 text-sm font-semibold rounded hover:bg-blue-600 hover:text-white transition-colors duration-200 flex items-center gap-1"
           >
-            Load More <ChevronDown size={16} /> {/* Added Icon */}
+            Load More <ChevronDown size={16} />
           </button>
         )}
         {visibleReviewCount > INITIAL_REVIEWS_COUNT && (
