@@ -13,7 +13,6 @@ import DefaultButton from "../buttons/DefaultButton";
 
 function ProductDetailSection({ product }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const images = [
     `https://picsum.photos/id/${product.id + 10}/800/800`,
     `https://picsum.photos/id/${product.id + 20}/800/800`,
@@ -64,7 +63,7 @@ function ProductDetailSection({ product }) {
         </div>
         <div className="w-4/5 mx-auto flex lg:flex-row flex-col my-8">
           <div className="lg:w-1/2 w-full h-[500px]">
-            <div className="h-[400px] relative mb-[10px] bg-gray-200 rounded overflow-hidden">
+            <div className="h-[400px] relative mb-[10px] bg-gray-200 overflow-hidden">
               <img
                 key={currentImageIndex}
                 src={images[currentImageIndex]}

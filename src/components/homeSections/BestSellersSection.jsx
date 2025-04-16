@@ -28,6 +28,7 @@ function BestSellersSection() {
           return (
             <ProductCard
               key={index}
+              id={product.id}
               imgSrc={product.imgSrc}
               category={product.category}
               title={product.title}
