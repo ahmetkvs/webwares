@@ -35,24 +35,38 @@ const teamMembers = [
 
 function TeamMeetSection() {
   return (
-    <section className="w-full pt-8 bg-[#FAFAFA]">
-      <div className="w-4/5 mx-auto">
-        <div className="text-center">
-          <h1 className="text-4xl text-black font-bold my-4">Meet our Team</h1>
-          <p className="font-semibold text-sm text-gray-400">
-            Problems trying to resolve the conflict between <br /> the two major
-            realms of Classical physics: Newtonian mechanics
+    <section className="w-full py-16 lg:py-24 bg-[#FAFAFA]">
+      <div className="w-11/12 md:w-10/12 lg:w-4/5 mx-auto">
+        <div className="text-center mb-12 lg:mb-16">
+          <h1 className="text-4xl text-black font-bold mb-4">Meet Our Team</h1>
+          <p className="text-sm text-gray-500 max-w-md mx-auto">
+            Problems trying to resolve the conflict between the two major realms
+            of Classical physics: Newtonian mechanics
           </p>
         </div>
-        <div className="w-full flex flex-col lg:flex-row gap-x-12">
+        <div className="w-4/5 mx-auto lg:w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
           {teamMembers.map((member) => {
             return (
-              <div className="bg-white">
-                <img
-                  className="w-2/3 aspect-square object-cover mx-auto rounded-full"
-                  src={member.imgSrc}
-                  alt={`${member.name} image`}
-                />
+              <div
+                key={member.id}
+                className="h-full bg-white flex flex-col items-center text-center p-6 gap-3 rounded-lg shadow-sm"
+              >
+                <div
+                  className={`w-32 h-32 md:w-36 md:h-36 rounded-full p-1.5 flex items-center justify-center mb-2`}
+                >
+                  <img
+                    className="w-full h-full object-cover rounded-full"
+                    src={member.imgSrc}
+                    alt={`${member.name}`}
+                  />
+                </div>
+                <h3 className="text-sm text-sky-600 font-semibold">
+                  {member.title}
+                </h3>
+                <h2 className="text-black font-bold text-base">
+                  {member.name}
+                </h2>
+                <p className="text-sm text-gray-500 px-2">{member.desc}</p>
               </div>
             );
           })}
