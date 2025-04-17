@@ -22,7 +22,10 @@ function ProductCard({
   const isList = variant === "list";
 
   return (
-    <Link to={`/shop/product/${id}`} className="hover:bg-slate-100">
+    <Link
+      to={`/shop/product/${id}`}
+      className="hover:bg-slate-100 transition-colors duration-700"
+    >
       <div
         className={`${
           isList
