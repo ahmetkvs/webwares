@@ -19,9 +19,9 @@ const stats = [
 
 function AboutInfoSection() {
   return (
-    <section className="w-full my-16">
-      <div className="w-4/5 mx-auto flex flex-col lg:flex-row mb-16">
-        <div className="lg:w-1/2 w-full">
+    <section className="w-full my-32">
+      <div className="w-4/5 mx-auto flex flex-col gap-8 justify-center items-center lg:flex-row mb-16">
+        <div className="lg:w-1/2 flex flex-col justify-center items-center text-center">
           <h3 className="text-red-500 font-bold">
             Excepteur sint occaecat cupidatat
           </h3>
@@ -30,7 +30,7 @@ function AboutInfoSection() {
             nisi ut aliquip ex ea commodo consequat
           </h2>
         </div>
-        <div className="lg:w-1/2 w-full flex flex-col justify-center">
+        <div className="lg:w-1/2 w-full flex flex-col justify-center text-center">
           <p>
             Problems trying to resolve the conflict between the two major realms
             of <br />
