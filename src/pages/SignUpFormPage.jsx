@@ -8,9 +8,12 @@ import {
   validateTaxId,
   validateIBAN,
 } from "../utils/validationFunctions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import api from "../services/api";
+import { formatSignUpData } from "../utils/formatObject";
 
 function SignUpFormPage() {
+  const [fetchedRoles, setFetchedRoles] = useState([]);
   const {
     register,
     handleSubmit,
@@ -20,15 +23,34 @@ function SignUpFormPage() {
     clearErrors,
   } = useForm({
     mode: "onTouched",
+    defaultValues: { role: "customer" },
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await api.get("/roles");
+        //console.log(resp.data);
+        setFetchedRoles(resp.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const passwordValue = watch("password");
+  const confirmPasswordValue = watch("confirmPassword");
 
   useEffect(() => {
     trigger("confirmPassword");
+  }, [passwordValue, confirmPasswordValue, trigger]);
+
+  useEffect(() => {
+    trigger("password");
   }, [passwordValue, trigger]);
 
-  const onSubmit = (data) => console.log(data);
   const selectedRole = watch("role");
 
   useEffect(() => {
@@ -41,6 +63,12 @@ function SignUpFormPage() {
       ]);
     }
   }, [selectedRole, clearErrors]);
+
+  function onSubmit(data) {
+    console.log(data);
+    const formattedData = formatSignUpData(data);
+    console.log(formattedData);
+  }
 
   return (
     <section className="w-full bg-gray-100 py-16 lg:py-24">
@@ -161,13 +189,19 @@ function SignUpFormPage() {
             <select
               id="role"
               name="role"
-              defaultValue="customer"
               className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-sky-600"
               {...register("role", { required: "Role is required" })}
             >
-              <option value="customer">Customer</option>
+              {fetchedRoles.reverse().map((role) => {
+                return (
+                  <option key={role.id} value={role.code}>
+                    {role.name}
+                  </option>
+                );
+              })}
+              {/*<option value="customer">Customer</option>
               <option value="admin">Admin</option>
-              <option value="store">Store</option>
+              <option value="store">Store</option>*/}
             </select>
             <p className="text-xs text-gray-500 mt-1">
               Selecting 'Store' will reveal additional business information

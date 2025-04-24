@@ -12,7 +12,7 @@ export function validatePassword(value) {
   if (!/[a-z]/.test(value)) errors.push("a lowercase letter");
   if (!/[A-Z]/.test(value)) errors.push("an uppercase letter");
   if (!/[0-9]/.test(value)) errors.push("a number");
-  if (!/[!@#$%^&*]/.test(value)) errors.push("a special character");
+  if (!/[!@#$%^&.?\-*]/.test(value)) errors.push("a special character");
 
   return errors.length > 0
     ? `Password must contain ${errors.join(", ")}.`
