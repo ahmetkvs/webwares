@@ -7,6 +7,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ContactPage from "./pages/ContactPage";
 import TeamPage from "./pages/TeamPage";
 import AboutUsPage from "./pages/AboutUsPage";
+import SignUpFormPage from "./pages/SignUpFormPage";
 
 function App() {
   return (
@@ -20,6 +21,12 @@ function App() {
       <Route path="/shop/product/:productId">
         <DefaultLayout>
           <ProductDetailPage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/signup">
+        <DefaultLayout>
+          <SignUpFormPage />
         </DefaultLayout>
       </Route>
 
