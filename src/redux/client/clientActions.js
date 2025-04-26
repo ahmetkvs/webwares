@@ -1,3 +1,5 @@
+import fetchRolesService from "../../services/fetchRolesService";
+
 export const SET_USER = "SET_USER";
 export const SET_ROLES = "SET_ROLES";
 export const SET_THEME = "SET_THEME";
@@ -22,3 +24,14 @@ export const setLanguage = (language) => ({
   type: SET_LANGUAGE,
   payload: language,
 });
+
+export const fetchRoles = () => {
+  return async (dispatch) => {
+    try {
+      const roles = await fetchRolesService();
+      dispatch(setRoles(roles));
+    } catch (error) {
+      console.error("Error fetching roles: ", error);
+    }
+  };
+};
