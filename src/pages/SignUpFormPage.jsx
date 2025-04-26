@@ -12,9 +12,13 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import { formatSignUpData } from "../utils/formatObject";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchRoles } from "../redux/client/clientActions";
 
 function SignUpFormPage() {
-  const [fetchedRoles, setFetchedRoles] = useState([]);
+  const dispatch = useDispatch();
+  const roles = useSelector((state) => state.client.roles);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const history = useHistory();
   const {
@@ -30,17 +34,9 @@ function SignUpFormPage() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await api.get("/roles");
-        //console.log(resp.data);
-        setFetchedRoles(resp.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
+    if (!roles || roles.length === 0) {
+      dispatch(fetchRoles());
+    }
   }, []);
 
   const passwordValue = watch("password");
@@ -68,9 +64,9 @@ function SignUpFormPage() {
   }, [selectedRole, clearErrors]);
 
   async function onSubmit(data) {
-    //console.log(data);
-    //const formattedData = formatSignUpData(data);
-    //console.log(formattedData);
+    console.log(data);
+    const formattedData = formatSignUpData(data);
+    console.log(formattedData);
     setIsSubmitting(true);
 
     try {
@@ -210,7 +206,7 @@ function SignUpFormPage() {
               className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-sky-600"
               {...register("role", { required: "Role is required" })}
             >
-              {fetchedRoles.reverse().map((role) => {
+              {roles.reverse().map((role) => {
                 return (
                   <option key={role.id} value={role.code}>
                     {role.name}
