@@ -32,3 +32,8 @@ export const formatSignUpData = (data) => {
     };
   }
 };
+
+export const formatLogin = (data) => {
+  const { email, password } = data;
+  return { email: email, password: password };
+};

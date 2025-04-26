@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { User, Search, ShoppingCart, Heart, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import Gravatar from "react-gravatar";
+import { useSelector } from "react-redux";
 
 function Navbar({ isHome }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const user = useSelector((state) => state.client.user);
+  const isLoggedIn = user.token ? true : false;
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -54,11 +59,25 @@ function Navbar({ isHome }) {
         {/* --- Right Section --- */}
         <div className="flex items-center gap-4 lg:gap-5">
           <span
-            className={`items-center gap-2 cursor-pointer ${conditionalIconVisibility}`}
+            className={`flex items-center gap-2 cursor-pointer ${conditionalIconVisibility}`}
           >
-            <User size={iconSize} />
-            <p className="text-sm hidden lg:block">Login / Register</p>
+            {isLoggedIn ? (
+              <>
+                <Gravatar
+                  email={user.email}
+                  size={iconSize}
+                  className="rounded-full border border-gray-300 shadow-sm"
+                />
+                <p className="text-sm hidden lg:block">{user.name}</p>
+              </>
+            ) : (
+              <>
+                <User size={iconSize} />
+                <p className="text-sm hidden lg:block">Login / Register</p>
+              </>
+            )}
           </span>
+
           <span
             className={`items-center cursor-pointer ${conditionalIconVisibility}`}
           >
