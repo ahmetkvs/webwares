@@ -1,4 +1,7 @@
+import { toast } from "react-toastify";
+import api from "../../services/api";
 import fetchRolesService from "../../services/fetchRolesService";
+import { formatLogin } from "../../utils/formatObject";
 
 export const SET_USER = "SET_USER";
 export const SET_ROLES = "SET_ROLES";
@@ -32,6 +35,28 @@ export const fetchRoles = () => {
       dispatch(setRoles(roles));
     } catch (error) {
       console.error("Error fetching roles: ", error);
+    }
+  };
+};
+
+export const loginUser = (credentials, history, fromPath) => {
+  return async (dispatch) => {
+    try {
+      const formattedCredentials = formatLogin(credentials);
+      const response = await api.post("/login", formattedCredentials);
+      const { token, name, email, role_id } = response.data;
+
+      dispatch(setUser({ token, name, email, role_id }));
+
+      if (credentials.remember) {
+        localStorage.setItem("token", token);
+      }
+      toast.success("Login successful!");
+
+      history.push(fromPath || "/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Login failed! Please check your credentials");
     }
   };
 };
