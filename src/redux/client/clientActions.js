@@ -60,3 +60,15 @@ export const loginUser = (credentials, history, fromPath) => {
     }
   };
 };
+
+export const logoutUser = () => {
+  return (dispatch) => {
+    localStorage.removeItem("token");
+
+    delete api.defaults.headers.common["Authorization"];
+
+    dispatch(setUser({}));
+
+    toast.success("Logged out successfully!");
+  };
+};
