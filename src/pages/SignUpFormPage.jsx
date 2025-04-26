@@ -11,9 +11,12 @@ import {
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { formatSignUpData } from "../utils/formatObject";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function SignUpFormPage() {
   const [fetchedRoles, setFetchedRoles] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const history = useHistory();
   const {
     register,
     handleSubmit,
@@ -64,10 +67,25 @@ function SignUpFormPage() {
     }
   }, [selectedRole, clearErrors]);
 
-  function onSubmit(data) {
-    console.log(data);
-    const formattedData = formatSignUpData(data);
-    console.log(formattedData);
+  async function onSubmit(data) {
+    //console.log(data);
+    //const formattedData = formatSignUpData(data);
+    //console.log(formattedData);
+    setIsSubmitting(true);
+
+    try {
+      const formattedData = formatSignUpData(data);
+      const response = await api.post("/signup", formattedData);
+
+      console.log("Registration success: ", response.data);
+
+      //redirect
+      //history.push("/login");
+    } catch (err) {
+      console.log("Registration error: ", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -332,9 +350,14 @@ function SignUpFormPage() {
             </button>
             <button
               type="submit"
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded focus:outline-none"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded focus:outline-none flex items-center justify-center"
+              disabled={isSubmitting}
             >
-              Sign up
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                "Sign up"
+              )}
             </button>
           </div>
         </form>
