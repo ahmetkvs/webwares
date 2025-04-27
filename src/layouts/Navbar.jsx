@@ -58,25 +58,28 @@ function Navbar({ isHome }) {
 
         {/* --- Right Section --- */}
         <div className="flex items-center gap-4 lg:gap-5">
-          <span
-            className={`flex items-center gap-2 cursor-pointer ${conditionalIconVisibility}`}
-          >
-            {isLoggedIn ? (
-              <>
-                <Gravatar
-                  email={user.email}
-                  size={iconSize}
-                  className="rounded-full border border-gray-300 shadow-sm"
-                />
-                <p className="text-sm hidden lg:block">{user.name}</p>
-              </>
-            ) : (
-              <>
-                <User size={iconSize} />
-                <p className="text-sm hidden lg:block">Login / Register</p>
-              </>
-            )}
-          </span>
+          <Link to="/login">
+            {/* This link will change while logged in */}
+            <span
+              className={`flex items-center gap-2 cursor-pointer ${conditionalIconVisibility}`}
+            >
+              {isLoggedIn ? (
+                <>
+                  <Gravatar
+                    email={user.email}
+                    size={iconSize}
+                    className="rounded-full border border-gray-300 shadow-sm"
+                  />
+                  <p className="text-sm hidden lg:block">{user.name}</p>
+                </>
+              ) : (
+                <>
+                  <User size={iconSize} />
+                  <p className="text-sm hidden lg:block">Login / Register</p>
+                </>
+              )}
+            </span>
+          </Link>
 
           <span
             className={`items-center cursor-pointer ${conditionalIconVisibility}`}
