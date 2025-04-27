@@ -3,17 +3,16 @@ import { Link } from "react-router-dom";
 
 function ProductCard({
   id,
-  imgSrc,
-  category,
-  title,
-  originalPrice, // Should be a number
+  images,
+  name,
+  price,
+  category_id,
   discountPercantage = 0,
   variant = "grid", //grid or list
 }) {
   let discountedPrice = null;
-  if (typeof originalPrice === "number" && discountPercantage > 0) {
-    discountedPrice =
-      originalPrice - (discountPercantage * originalPrice) / 100;
+  if (typeof price === "number" && discountPercantage > 0) {
+    discountedPrice = price - (discountPercantage * price) / 100;
   }
 
   //Test colors array
