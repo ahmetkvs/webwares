@@ -82,7 +82,7 @@ function Navbar({ isHome }) {
                   className="flex items-center gap-1 hover:text-black"
                 >
                   <ChevronDown
-                    size={16}
+                    size={iconSize / 1.5}
                     className={`ml-2 transition-transform duration-200 ${
                       isShopDropdownOpen ? "rotate-180" : ""
                     }`}
@@ -91,18 +91,30 @@ function Navbar({ isHome }) {
               </div>
 
               {isShopDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-96 bg-white rounded-md shadow-lg py-2 z-50">
+                <div className="absolute left-0 mt-2 lg:w-96 bg-white rounded-md shadow-lg py-2 z-50">
                   <div className="flex mx-2 my-2 font-inter text-lg font-semibold text-gray-500">
                     <div className="w-1/2 flex flex-col gap-2">
                       <h4 className="font-bold text-black mb-4">Female</h4>
                       {splitCategories.female.map((category) => {
-                        return <p key={category.id}>{category.title}</p>;
+                        return (
+                          <Link key={category.id} to={category.link}>
+                            <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                              {category.title}
+                            </p>
+                          </Link>
+                        );
                       })}
                     </div>
                     <div className="w-1/2 flex flex-col gap-2">
                       <h4 className="font-bold text-black mb-4">Male</h4>
                       {splitCategories.male.map((category) => {
-                        return <p key={category.id}>{category.title}</p>;
+                        return (
+                          <Link key={category.id} to={category.link}>
+                            <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                              {category.title}
+                            </p>
+                          </Link>
+                        );
                       })}
                     </div>
                   </div>
@@ -200,7 +212,7 @@ function Navbar({ isHome }) {
         >
           Home
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
           <Link
             to="/shop"
             className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
@@ -208,9 +220,45 @@ function Navbar({ isHome }) {
             Shop
           </Link>
           <button onClick={toggleShopDropdown}>
-            <ChevronDown />
+            <ChevronDown
+              size={iconSize}
+              className={`ml-2 transition-transform duration-200 ${
+                isShopDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
+          {isShopDropdownOpen && (
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 mt-2 w-96 bg-white rounded-md shadow-lg py-2 z-50">
+              <div className="flex mx-2 my-2 font-inter text-lg font-semibold text-gray-500">
+                <div className="w-1/2 flex flex-col gap-2">
+                  <h4 className="font-bold text-black mb-4">Female</h4>
+                  {splitCategories.female.map((category) => {
+                    return (
+                      <Link key={category.id} to={category.link}>
+                        <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                          {category.title}
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+                <div className="w-1/2 flex flex-col gap-2">
+                  <h4 className="font-bold text-black mb-4">Male</h4>
+                  {splitCategories.male.map((category) => {
+                    return (
+                      <Link key={category.id} to={category.link}>
+                        <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                          {category.title}
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
+
         <Link
           to="/about"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
