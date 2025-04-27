@@ -1,3 +1,5 @@
+import fetchCategoriesService from "../../services/fetchCategoriesService";
+
 export const SET_CATEGORIES = "SET_CATEGORIES";
 export const SET_PRODUCT_LIST = "SET_PRODUCT_LIST";
 export const SET_TOTAL = "SET_TOTAL";
@@ -40,3 +42,14 @@ export const setFilter = (filter) => ({
   type: SET_FILTER,
   payload: filter,
 });
+
+export const fetchCategories = () => {
+  return async (dispatch) => {
+    try {
+      const categories = await fetchCategoriesService();
+      dispatch(setCategories(categories));
+    } catch (error) {
+      console.error("Error fetching categories: ", error);
+    }
+  };
+};
