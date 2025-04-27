@@ -2,10 +2,21 @@ import { useState } from "react";
 import { User, Search, ShoppingCart, Heart, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Gravatar from "react-gravatar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/client/clientActions";
 
 function Navbar({ isHome }) {
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  function toggleDropdown() {
+    setIsDropdownOpen((prevState) => !prevState);
+  }
+
+  function handleLogout() {
+    dispatch(logoutUser());
+  }
 
   const user = useSelector((state) => state.client.user);
   const isLoggedIn = user.token ? true : false;
@@ -58,28 +69,42 @@ function Navbar({ isHome }) {
 
         {/* --- Right Section --- */}
         <div className="flex items-center gap-4 lg:gap-5">
-          <Link to="/login">
-            {/* This link will change while logged in */}
-            <span
-              className={`flex items-center gap-2 cursor-pointer ${conditionalIconVisibility}`}
-            >
-              {isLoggedIn ? (
-                <>
-                  <Gravatar
-                    email={user.email}
-                    size={iconSize}
-                    className="rounded-full border border-gray-300 shadow-sm"
-                  />
-                  <p className="text-sm hidden lg:block">{user.name}</p>
-                </>
-              ) : (
-                <>
-                  <User size={iconSize} />
-                  <p className="text-sm hidden lg:block">Login / Register</p>
-                </>
+          {isLoggedIn ? (
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Gravatar
+                  email={user.email}
+                  size={iconSize}
+                  className="rounded-full border border-gray-300 shadow-sm"
+                />
+                <p className="text-sm hidden lg:block">{user.name}</p>
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 z-50">
+                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                    Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
               )}
-            </span>
-          </Link>
+            </div>
+          ) : (
+            <Link to="/login">
+              <span className="flex items-center gap-2">
+                <User size={iconSize} />
+                <p className="text-sm hidden lg:block">Login / Register</p>
+              </span>
+            </Link>
+          )}
 
           <span
             className={`items-center cursor-pointer ${conditionalIconVisibility}`}
