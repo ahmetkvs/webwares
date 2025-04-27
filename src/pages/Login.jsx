@@ -6,6 +6,7 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
@@ -101,6 +102,16 @@ function Login() {
             Submit
           </button>
         </form>
+        <div className="mt-12 text-lg font-inter">
+          <Link to="/signup">
+            <p>
+              Don't have an account?
+              <span className="text-sky-600 font-bold hover:cursor-pointer hover:text-sky-950 ml-2">
+                Sign Up
+              </span>
+            </p>
+          </Link>
+        </div>
       </div>
     </section>
   );

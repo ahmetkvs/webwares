@@ -14,6 +14,7 @@ import { formatSignUpData } from "../utils/formatObject";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchRoles } from "../redux/client/clientActions";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 function SignUpFormPage() {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ function SignUpFormPage() {
       console.log("Registration success: ", response.data);
 
       //redirect
-      //history.push("/login");
+      history.push("/login");
     } catch (err) {
       console.log("Registration error: ", err);
     } finally {
@@ -103,6 +104,14 @@ function SignUpFormPage() {
             <p className="text-sm font-bold text-center text-gray-600">
               We just need a little bit of data from you to get you started
             </p>
+            <Link to="/login">
+              <p>
+                Already have an account
+                <span className="text-sky-600 font-bold hover:cursor-pointer hover:text-sky-950 ml-2">
+                  Log In
+                </span>
+              </p>
+            </Link>
           </div>
 
           <div>

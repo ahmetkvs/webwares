@@ -9,8 +9,17 @@ import TeamPage from "./pages/TeamPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import SignUpFormPage from "./pages/SignUpFormPage";
 import Login from "./pages/Login";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { verifyToken } from "./utils/authCheck";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    verifyToken(dispatch);
+  }, [dispatch]);
+
   return (
     <Switch>
       <Route exact path="/">

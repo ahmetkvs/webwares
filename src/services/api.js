@@ -5,4 +5,10 @@ const api = axios.create({
   timeout: 1000,
 });
 
+const token = localStorage.getItem("token");
+
+if (token) {
+  api.defaults.headers.common["Authorization"] = token;
+}
+
 export default api;
