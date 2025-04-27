@@ -1,19 +1,24 @@
+import { useSelector } from "react-redux";
 import formatPrice from "../../utils/formatPrice";
 import { Link } from "react-router-dom";
+import { findCategoryNameById } from "../../utils/formatCategories";
 
 function ProductCard({
   id,
-  imgSrc,
-  category,
-  title,
-  originalPrice, // Should be a number
+  images,
+  name,
+  price,
+  category_id,
   discountPercantage = 0,
   variant = "grid", //grid or list
 }) {
+  const categories = useSelector((state) => state.product.categories || []);
+
+  const category = findCategoryNameById(categories, category_id);
+
   let discountedPrice = null;
-  if (typeof originalPrice === "number" && discountPercantage > 0) {
-    discountedPrice =
-      originalPrice - (discountPercantage * originalPrice) / 100;
+  if (typeof price === "number" && discountPercantage > 0) {
+    discountedPrice = price - (discountPercantage * price) / 100;
   }
 
   //Test colors array
@@ -21,6 +26,7 @@ function ProductCard({
 
   const isList = variant === "list";
 
+  const imgSrc = images?.[0]?.url || "https://picsum.photos/183/238?random=1";
   return (
     <Link
       to={`/shop/product/${id}`}
@@ -41,7 +47,7 @@ function ProductCard({
               : "lg:w-[183px] lg:h-[238px] w-full h-auto mx-auto"
           }`}
           src={imgSrc}
-          alt={`${title} - ${category}`}
+          alt={name}
         />
         {/* Text Content */}
         <div
@@ -49,7 +55,7 @@ function ProductCard({
             isList ? "items-start" : "items-center"
           }`}
         >
-          <h3 className="text font-bold">{title}</h3>
+          <h3 className="text font-bold">{name}</h3>
           <p className="text text-gray-600">{category}</p>
 
           {/* Price Area */}
@@ -61,7 +67,7 @@ function ProductCard({
                   : "text-gray-400"
               }`}
             >
-              {formatPrice(originalPrice)}
+              {formatPrice(price)}
             </span>
             {discountedPrice !== null && (
               <span className="text-teal-700 font-bold">

@@ -1,3 +1,4 @@
+import api from "../../services/api";
 import fetchCategoriesService from "../../services/fetchCategoriesService";
 
 export const SET_CATEGORIES = "SET_CATEGORIES";
@@ -50,6 +51,24 @@ export const fetchCategories = () => {
       dispatch(setCategories(categories));
     } catch (error) {
       console.error("Error fetching categories: ", error);
+    }
+  };
+};
+
+export const fetchProducts = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(setFetchState("FETCHING"));
+
+      const response = await api.get("/products");
+      const { products, total } = response.data;
+
+      dispatch(setProductList(products));
+      dispatch(setTotal(total));
+      dispatch(setFetchState("FETCHED"));
+    } catch (error) {
+      console.error("Error fetching products: ", error);
+      dispatch(setFetchState("FAILED"));
     }
   };
 };
