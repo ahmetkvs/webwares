@@ -1,14 +1,13 @@
 import { ChevronRight } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getTopRatedCategories } from "../../utils/formatCategories";
 
 function ShopHero() {
-  const categories = [
-    { name: "CLOTHS", items: 5, bg: "bg-gray-300" },
-    { name: "CLOTHS", items: 5, bg: "bg-blue-300" },
-    { name: "CLOTHS", items: 5, bg: "bg-pink-300" },
-    { name: "CLOTHS", items: 5, bg: "bg-teal-300" },
-    { name: "CLOTHS", items: 5, bg: "bg-purple-300" },
-  ];
+  const originalCategories = useSelector(
+    (state) => state.product.categories || []
+  );
+  const categories = getTopRatedCategories(originalCategories);
 
   return (
     <section className="bg-[#FAFAFA]">
@@ -24,12 +23,18 @@ function ShopHero() {
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-2">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <div
-              key={index}
-              className={`relative ${category.bg} aspect-square overflow-hidden`}
+              key={category.id}
+              className={`relative aspect-square overflow-hidden`}
             >
-              <div className="relative z-10 h-full flex flex-col justify-center items-center p-4 text-center text-white">
+              <img
+                src={category.bg}
+                alt={category.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute z-10 inset-0 flex flex-col justify-center items-center p-4 text-center text-white bg-black bg-opacity-25">
+                <h3 className="font-bold text-xl">{category.gender}</h3>
                 <h3 className="font-bold text-xl">{category.name}</h3>
                 <p className="text-sm mt-1">{category.items} items</p>
               </div>

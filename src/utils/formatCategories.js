@@ -21,3 +21,18 @@ export function formatCategories(categories) {
 
   return { male, female };
 }
+
+export function getTopRatedCategories(categories) {
+  const sortedCategories = categories.sort((a, b) => b.rating - a.rating);
+
+  const top5Categories = sortedCategories.slice(0, 5);
+
+  const formattedCategories = top5Categories.map((category) => ({
+    name: category.title.toUpperCase(),
+    items: 5,
+    bg: category.img,
+    gender: category.gender === "e" ? "Erkek" : "Kadın",
+  }));
+
+  return formattedCategories;
+}
