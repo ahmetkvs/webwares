@@ -1,22 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutGrid,
   List,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  OctagonAlert,
 } from "lucide-react";
-import DefaultButton from "../buttons/DefaultButton";
-import { mockProducts } from "../../data/data";
 import ProductCard from "../Cards/ClothingProductCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/product/productActions";
+import { GridLoader, ScaleLoader } from "react-spinners";
 
 const ITEMS_PER_PAGE = 12;
 
 function ShopProductViewSection() {
+  const dispatch = useDispatch();
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState("Popularity");
   const [viewType, setViewType] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const fetchState = useSelector((state) => state.product.fetchState || []);
+  const productList = useSelector((state) => state.product.productList || []);
+  const total = useSelector((state) => state.product.total || []);
 
   const sortOptions = [
     //Subject to change
@@ -27,12 +38,12 @@ function ShopProductViewSection() {
     "Price: High to Low",
   ];
 
-  const totalProducts = mockProducts.length;
-  const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+  const totalProducts = total;
+  const totalPages = Math.ceil(productList.length / ITEMS_PER_PAGE);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentProducts = mockProducts.slice(startIndex, endIndex);
+  const currentProducts = productList.slice(startIndex, endIndex);
 
   const handleSortSelect = (option) => {
     setSelectedSortOption(option);
@@ -127,28 +138,57 @@ function ShopProductViewSection() {
               </div>
             )}
           </div>
-          <DefaultButton size="md">Filter</DefaultButton>
-          {/*filter Does nothing for now */}
+          <button className="bg-sky-500 text-white font-bold font-inter px-6 py-1 rounded-2xl cursor-pointer hover:bg-sky-900 transition-colors duration-300">
+            Filter
+          </button>
         </div>
       </div>
       {/*Top Controls Bar End*/}
       <div className="my-16">
-        <div className={viewType === "grid" ? gridViewClass : listViewClass}>
-          {currentProducts.map((product) => {
-            return (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                imgSrc={product.imgSrc}
-                category={product.category}
-                title={product.title}
-                originalPrice={product.originalPrice}
-                discountPercantage={product.discountPercantage}
-                variant={viewType}
+        {fetchState === "FETCHED" && (
+          <div className={viewType === "grid" ? gridViewClass : listViewClass}>
+            {currentProducts.map((product) => {
+              return (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  images={product.images}
+                  category_id={product.category_id}
+                  name={product.name}
+                  price={product.price}
+                  discountPercantage={product.discountPercantage}
+                  variant={viewType}
+                />
+              );
+            })}
+          </div>
+        )}
+        {fetchState === "NOT_FETCHED" && (
+          <div className="w-full flex justify-center items-center h-48">
+            <p className="text-gray-500">Loading products...</p>
+          </div>
+        )}
+        {fetchState === "FETCHING" && (
+          <div className="w-full flex justify-center items-center h-48">
+            {viewType === "grid" ? (
+              <GridLoader color="#3b82f6" size={20} />
+            ) : (
+              <ScaleLoader
+                color="#3b82f6"
+                height={40}
+                width={5}
+                radius={2}
+                margin={2}
               />
-            );
-          })}
-        </div>
+            )}
+          </div>
+        )}
+        {fetchState === "FAILED" && (
+          <div className="w-full flex flex-col justify-center items-center h-48 text-red-500">
+            <OctagonAlert size={64} />
+            <p className="text-lg">Failed to load products.</p>
+          </div>
+        )}
       </div>
       {totalPages > 1 && (
         <div className="w-4/5 mx-auto flex justify-center items-center gap-2 mt-12 mb-8">
