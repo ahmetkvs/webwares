@@ -1,22 +1,43 @@
-import { useState } from "react";
-import { User, Search, ShoppingCart, Heart, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  User,
+  Search,
+  ShoppingCart,
+  Heart,
+  Menu,
+  X,
+  ChevronDown,
+} from "lucide-react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Gravatar from "react-gravatar";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/client/clientActions";
+import { fetchCategories } from "../redux/product/productActions";
+import { formatCategories } from "../utils/formatCategories";
 
 function Navbar({ isHome }) {
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
+  const [isUSerDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
-  function toggleDropdown() {
-    setIsDropdownOpen((prevState) => !prevState);
+  function toggleShopDropdown() {
+    setIsShopDropdownOpen((prevState) => !prevState);
+  }
+  function toggleUserDropdown() {
+    setIsUserDropdownOpen((prevState) => !prevState);
   }
 
   function handleLogout() {
     dispatch(logoutUser());
   }
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const categories = useSelector((state) => state.product.categories || []);
+  const splitCategories = formatCategories(categories);
 
   const user = useSelector((state) => state.client.user);
   const isLoggedIn = user.token ? true : false;
@@ -41,17 +62,66 @@ function Navbar({ isHome }) {
         {/* --- Left Section--- */}
         <div className="flex items-center">
           {/* Logo */}
-          <h1 className="font-oswald text-row1third font-semibold text-2xl mr-4 sm:mr-8">
-            WebWares
-          </h1>
+          <Link to="/">
+            <h1 className="font-oswald text-row1third font-semibold text-2xl mr-4 sm:mr-8">
+              WebWares
+            </h1>
+          </Link>
 
           <div className="hidden lg:flex items-center gap-6">
             <Link to="/" className="hover:text-black">
               Home
             </Link>
-            <Link to="/shop" className="hover:text-black">
-              Shop
-            </Link>
+            <div className="relative">
+              <div className="flex items-center gap-2">
+                <Link to="/shop">
+                  <span className="hover:text-black">Shop</span>
+                </Link>
+                <button
+                  onClick={toggleShopDropdown}
+                  className="flex items-center gap-1 hover:text-black"
+                >
+                  <ChevronDown
+                    size={iconSize / 1.5}
+                    className={`ml-2 transition-transform duration-200 ${
+                      isShopDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {isShopDropdownOpen && (
+                <div className="absolute left-0 mt-2 lg:w-96 bg-white rounded-md shadow-lg py-2 z-50">
+                  <div className="flex mx-2 my-2 font-inter text-lg font-semibold text-gray-500">
+                    <div className="w-1/2 flex flex-col gap-2">
+                      <h4 className="font-bold text-black mb-4">Female</h4>
+                      {splitCategories.female.map((category) => {
+                        return (
+                          <Link key={category.id} to={category.link}>
+                            <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                              {category.title}
+                            </p>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                    <div className="w-1/2 flex flex-col gap-2">
+                      <h4 className="font-bold text-black mb-4">Male</h4>
+                      {splitCategories.male.map((category) => {
+                        return (
+                          <Link key={category.id} to={category.link}>
+                            <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                              {category.title}
+                            </p>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <Link to="/about" className="hover:text-black">
               About
             </Link>
@@ -72,7 +142,7 @@ function Navbar({ isHome }) {
           {isLoggedIn ? (
             <div className="relative">
               <button
-                onClick={toggleDropdown}
+                onClick={toggleUserDropdown}
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <Gravatar
@@ -83,7 +153,7 @@ function Navbar({ isHome }) {
                 <p className="text-sm hidden lg:block">{user.name}</p>
               </button>
 
-              {isDropdownOpen && (
+              {isUSerDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 z-50">
                   <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                     Profile
@@ -142,12 +212,53 @@ function Navbar({ isHome }) {
         >
           Home
         </Link>
-        <Link
-          to="/shop"
-          className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
-        >
-          Shop
-        </Link>
+        <div className="flex items-center gap-4 relative">
+          <Link
+            to="/shop"
+            className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+          >
+            Shop
+          </Link>
+          <button onClick={toggleShopDropdown}>
+            <ChevronDown
+              size={iconSize}
+              className={`ml-2 transition-transform duration-200 ${
+                isShopDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {isShopDropdownOpen && (
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 mt-2 w-96 bg-white rounded-md shadow-lg py-2 z-50">
+              <div className="flex mx-2 my-2 font-inter text-lg font-semibold text-gray-500">
+                <div className="w-1/2 flex flex-col gap-2">
+                  <h4 className="font-bold text-black mb-4">Female</h4>
+                  {splitCategories.female.map((category) => {
+                    return (
+                      <Link key={category.id} to={category.link}>
+                        <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                          {category.title}
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+                <div className="w-1/2 flex flex-col gap-2">
+                  <h4 className="font-bold text-black mb-4">Male</h4>
+                  {splitCategories.male.map((category) => {
+                    return (
+                      <Link key={category.id} to={category.link}>
+                        <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                          {category.title}
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         <Link
           to="/about"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
