@@ -18,7 +18,8 @@ import { useParams } from "react-router-dom";
 const ITEMS_PER_PAGE = 12;
 
 function ShopProductViewSection() {
-  const { gender, categoryName, categoryId } = useParams();
+  const { categoryId } = useParams();
+  //console.log(gender, categoryName, categoryId);
   const dispatch = useDispatch();
 
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);

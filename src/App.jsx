@@ -58,7 +58,7 @@ function App() {
         </DefaultLayout>
       </Route>
 
-      <Route path="/shop">
+      <Route path="/shop/:gender/:categoryName/:categoryId">
         <DefaultLayout>
           <ShopPage />
         </DefaultLayout>
