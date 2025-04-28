@@ -176,17 +176,16 @@ function ProductDetailSection({ product }) {
               <div className="flex gap-4">
                 <DefaultButton size="lg">
                   <p className="text-sm">Add to Cart</p>
-                  {/* Changed "Select Options" */}
                 </DefaultButton>
                 <div className="flex items-center gap-3 text-gray-800">
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-red-600 hover:text-white transition-colors duration-200 shadow">
-                    <Heart size={20} />
+                    <Heart size={24} />
                   </div>
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-green-600 hover:text-white transition-colors duration-200 shadow">
-                    <ShoppingCart size={20} />
+                    <ShoppingCart size={24} />
                   </div>
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-slate-800 hover:text-white transition-colors duration-200 shadow">
-                    <Eye size={20} />
+                    <Eye size={24} />
                   </div>
                 </div>
               </div>
