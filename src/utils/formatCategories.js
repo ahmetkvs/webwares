@@ -28,6 +28,7 @@ export function getTopRatedCategories(categories) {
   const top5Categories = sortedCategories.slice(0, 5);
 
   const formattedCategories = top5Categories.map((category) => ({
+    id: category.id,
     name: category.title.toUpperCase(),
     items: 5,
     bg: category.img,

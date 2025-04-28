@@ -55,12 +55,28 @@ export const fetchCategories = () => {
   };
 };
 
-export const fetchProducts = () => {
+export const fetchProducts = ({ category, sort, filter } = {}) => {
   return async (dispatch) => {
     try {
       dispatch(setFetchState("FETCHING"));
 
-      const response = await api.get("/products");
+      let query = "";
+
+      if (category) {
+        query += `category=${category}&`;
+      }
+      if (filter) {
+        query += `filter=${filter}&`;
+      }
+      if (sort) {
+        query += `sort=${sort}&`;
+      }
+
+      if (query[query.length - 1] === "&") {
+        query = query.slice(0, -1);
+      }
+
+      const response = await api.get(`/products${query ? `?${query}` : ""}`);
       const { products, total } = response.data;
 
       dispatch(setProductList(products));

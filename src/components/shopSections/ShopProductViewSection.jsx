@@ -6,37 +6,47 @@ import {
   ChevronLeft,
   ChevronRight,
   OctagonAlert,
+  FunnelX,
+  FunnelPlusIcon,
 } from "lucide-react";
 import ProductCard from "../Cards/ClothingProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/product/productActions";
 import { GridLoader, ScaleLoader } from "react-spinners";
+import { useParams } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 12;
 
 function ShopProductViewSection() {
+  const { categoryId } = useParams();
+  //console.log(gender, categoryName, categoryId);
   const dispatch = useDispatch();
+
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
-  const [selectedSortOption, setSelectedSortOption] = useState("Popularity");
+  const [selectedSortOption, setSelectedSortOption] = useState("");
   const [viewType, setViewType] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const [filter, setFilter] = useState({ input: "", text: "" });
 
   const fetchState = useSelector((state) => state.product.fetchState || []);
   const productList = useSelector((state) => state.product.productList || []);
   const total = useSelector((state) => state.product.total || []);
 
   const sortOptions = [
-    //Subject to change
-    "Popularity",
-    "Average rating",
-    "Newness",
-    "Price: Low to High",
-    "Price: High to Low",
+    { label: "Price: Low to High", value: "price:asc" },
+    { label: "Price: High to Low", value: "price:desc" },
+    { label: "Rating: Low to High", value: "rating:asc" },
+    { label: "Rating: High to Low", value: "rating:desc" },
   ];
+
+  function getLabelByValue(value) {
+    for (const item of sortOptions) {
+      if (item.value === value) {
+        return item.label;
+      }
+    }
+    return "Please Choose";
+  }
 
   const totalProducts = total;
   const totalPages = Math.ceil(productList.length / ITEMS_PER_PAGE);
@@ -45,11 +55,17 @@ function ShopProductViewSection() {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentProducts = productList.slice(startIndex, endIndex);
 
-  const handleSortSelect = (option) => {
-    setSelectedSortOption(option);
-    setIsSortDropdownOpen(false); //close after selection
+  const handleSortSelect = (optionValue) => {
+    setSelectedSortOption(optionValue);
+    setIsSortDropdownOpen(false);
+  };
 
-    //Implement actual sorting logic
+  const handleFilterSubmit = () => {
+    setFilter((prevFilter) => ({ ...prevFilter, text: prevFilter.input }));
+  };
+
+  const handleFilterReset = () => {
+    setFilter({ input: "", text: "" });
   };
 
   const handlePageChange = (page) => {
@@ -57,6 +73,16 @@ function ShopProductViewSection() {
       setCurrentPage(page);
     }
   };
+
+  useEffect(() => {
+    const params = {};
+
+    if (categoryId) params.category = categoryId;
+    if (filter.text) params.filter = filter.text;
+    if (selectedSortOption) params.sort = selectedSortOption;
+
+    dispatch(fetchProducts(params));
+  }, [dispatch, categoryId, filter.text, selectedSortOption]);
 
   const gridViewClass =
     "w-4/5 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-16";
@@ -107,13 +133,13 @@ function ShopProductViewSection() {
           </span>
         </div>
         <div className="flex gap-2">
-          {/*Sort DropDown (Default Popularity) */}
+          {/*Sort DropDown */}
           <div className="relative">
             <button
               onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
-              className="flex items-center justify-between w-36 px-4 py-2 text-sm bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" // Style as per screenshot
+              className="flex items-center justify-between w-56 px-4 py-2 text-sm bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" // Style as per screenshot
             >
-              <span>{selectedSortOption}</span>
+              <span>{getLabelByValue(selectedSortOption)}</span>
               <ChevronDown
                 size={16}
                 className={`ml-2 transition-transform duration-200 ${
@@ -124,13 +150,13 @@ function ShopProductViewSection() {
             {isSortDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
                 <ul className="py-1">
-                  {sortOptions.map((option) => (
-                    <li key={option}>
+                  {sortOptions.map(({ label, value }) => (
+                    <li key={value}>
                       <button
-                        onClick={() => handleSortSelect(option)}
+                        onClick={() => handleSortSelect(value)}
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                       >
-                        {option}
+                        {label}
                       </button>
                     </li>
                   ))}
@@ -138,9 +164,36 @@ function ShopProductViewSection() {
               </div>
             )}
           </div>
-          <button className="bg-sky-500 text-white font-bold font-inter px-6 py-1 rounded-2xl cursor-pointer hover:bg-sky-900 transition-colors duration-300">
-            Filter
-          </button>
+          <input
+            type="text"
+            value={filter.input}
+            onChange={(e) => setFilter({ ...filter, input: e.target.value })}
+            placeholder="Filter products"
+            className="border px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {filter.text ? (
+            <div className="flex rounded-md shadow-sm">
+              <button
+                onClick={handleFilterSubmit}
+                className="bg-sky-500 text-white font-bold font-inter px-4 py-2 rounded-l-md cursor-pointer hover:bg-sky-900 transition-colors duration-300 flex items-center gap-1"
+              >
+                <FunnelPlusIcon size={16} />
+              </button>
+              <button
+                onClick={handleFilterReset}
+                className="bg-gray-300 text-gray-700 font-bold font-inter px-4 py-2 rounded-r-md cursor-pointer hover:bg-gray-400 transition-colors duration-300 flex items-center gap-1 border-l border-gray-400"
+              >
+                <FunnelX size={16} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleFilterSubmit}
+              className="bg-sky-500 text-white font-bold font-inter px-6 py-2 rounded-2xl cursor-pointer hover:bg-sky-900 transition-colors duration-300"
+            >
+              Filter
+            </button>
+          )}
         </div>
       </div>
       {/*Top Controls Bar End*/}
