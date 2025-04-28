@@ -24,8 +24,11 @@ function ShopHero() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-2">
           {categories.map((category) => (
-            <div
+            <Link
               key={category.id}
+              to={`/shop/${category.gender.toLowerCase()}/${category.name.toLowerCase()}/${
+                category.id
+              }`}
               className={`relative aspect-square overflow-hidden`}
             >
               <img
@@ -38,7 +41,7 @@ function ShopHero() {
                 <h3 className="font-bold text-xl">{category.name}</h3>
                 <p className="text-sm mt-1">{category.items} items</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
