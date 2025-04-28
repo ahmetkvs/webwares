@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import formatPrice from "../../utils/formatPrice";
 import { Link } from "react-router-dom";
-import { findCategoryNameById } from "../../utils/formatCategories";
+import { findCategoryById } from "../../utils/formatCategories";
+import slugify from "../../utils/slugify";
 
 function ProductCard({
   id,
@@ -14,7 +15,8 @@ function ProductCard({
 }) {
   const categories = useSelector((state) => state.product.categories || []);
 
-  const category = findCategoryNameById(categories, category_id);
+  const category = findCategoryById(categories, category_id);
+  console.log(category);
 
   let discountedPrice = null;
   if (typeof price === "number" && discountPercantage > 0) {
@@ -27,9 +29,17 @@ function ProductCard({
   const isList = variant === "list";
 
   const imgSrc = images?.[0]?.url || "https://picsum.photos/183/238?random=1";
+  console.log(
+    `/shop/${slugify(category.gender)}/${slugify(category.title)}/${slugify(
+      category.id
+    )}/${slugify(name)}/${slugify(id)}`
+  );
+
   return (
     <Link
-      to={`/shop/product/${id}`}
+      to={`/shop/${slugify(category.gender)}/${slugify(
+        category.title
+      )}/${slugify(category.id)}/${slugify(name)}/${slugify(id)}`}
       className="hover:bg-slate-100 transition-colors duration-700"
     >
       <div
@@ -56,7 +66,7 @@ function ProductCard({
           }`}
         >
           <h3 className="text font-bold">{name}</h3>
-          <p className="text text-gray-600">{category}</p>
+          <p className="text text-gray-600">{category.title}</p>
 
           {/* Price Area */}
           <div className="flex items-center gap-2">

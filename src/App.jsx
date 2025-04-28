@@ -28,12 +28,6 @@ function App() {
         </DefaultLayout>
       </Route>
 
-      <Route path="/shop/product/:productId">
-        <DefaultLayout>
-          <ProductDetailPage />
-        </DefaultLayout>
-      </Route>
-
       <Route path="/signup">
         <DefaultLayout>
           <SignUpFormPage />
@@ -55,6 +49,12 @@ function App() {
       <Route path="/team">
         <DefaultLayout>
           <TeamPage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
+        <DefaultLayout>
+          <ProductDetailPage />
         </DefaultLayout>
       </Route>
 

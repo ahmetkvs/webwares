@@ -1,17 +1,40 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../Cards/ClothingProductCard";
-import { ChevronUp } from "lucide-react";
-import { mockProducts } from "../../data/data.js";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/product/productActions";
+import { GridLoader } from "react-spinners";
 
 function BestSellersSection() {
-  const [tabsVisible, setTabsVisible] = useState(1);
+  const dispatch = useDispatch();
+  const bestsellerProducts = useSelector(
+    (state) => state.product.productList || []
+  );
+  const fetchState = useSelector((state) => state.product.fetchState);
+  const total = useSelector((state) => state.product.total || 0);
+  const limit = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
-  function loadMoreItems() {
-    setTabsVisible((prevCount) => prevCount + 1);
-  }
-  function resetTabs() {
-    setTabsVisible(1);
-  }
+  useEffect(() => {
+    dispatch(
+      fetchProducts({
+        limit: limit,
+        offset: (currentPage - 1) * limit,
+      })
+    );
+  }, [dispatch, currentPage, limit]);
+
+  const totalPages = Math.ceil(total / limit);
+  const hasMore = currentPage < totalPages;
+  const hasLess = currentPage > 1;
+
+  const handleLoadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handleCollapse = () => {
+    setCurrentPage(1);
+  };
 
   return (
     <section className="my-32">
@@ -24,35 +47,50 @@ function BestSellersSection() {
       </div>
       {/* Product Cards */}
       <div className="w-4/5 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-10">
-        {mockProducts.slice(0, tabsVisible * 10).map((product, index) => {
-          return (
+        {fetchState === "FETCHING" && currentPage === 1 ? (
+          <div className="col-span-full flex justify-center py-10">
+            <GridLoader color="#3b82f6" size={20} />
+          </div>
+        ) : fetchState === "FAILED" ? (
+          <div className="col-span-full text-center py-10 text-red-500">
+            Failed to load bestseller products.
+          </div>
+        ) : (
+          bestsellerProducts.map((product) => (
             <ProductCard
-              key={index}
+              key={product.id}
               id={product.id}
-              imgSrc={product.imgSrc}
-              category={product.category}
-              title={product.title}
-              originalPrice={product.originalPrice}
+              images={product.images}
+              category_id={product.category_id}
+              name={product.name}
+              price={product.price}
               discountPercantage={product.discountPercantage}
             />
-          );
-        })}
+          ))
+        )}
+        {fetchState === "FETCHING" && currentPage > 1 && (
+          <div className="col-span-full flex justify-center py-4">
+            <GridLoader color="#3b82f6" size={15} />
+          </div>
+        )}
       </div>
 
       {/* Load/Collapse Buttons */}
       <div className="text-center mt-16 flex justify-center gap-4">
-        <button
-          className="border border-row1third text-row1third px-8 py-2 font-bold rounded hover:bg-row1third hover:text-white transition-colors duration-200"
-          onClick={loadMoreItems}
-        >
-          Load More Products
-        </button>
-        {tabsVisible > 1 && (
+        {hasMore && (
           <button
             className="flex border border-row1third text-row1third px-8 py-2 font-bold rounded hover:bg-row1third hover:text-white transition-colors duration-200"
-            onClick={resetTabs}
+            onClick={handleLoadMore}
           >
-            Collapse <ChevronUp />
+            Next <ChevronDown />
+          </button>
+        )}
+        {hasLess && (
+          <button
+            className="flex border border-row1third text-row1third px-8 py-2 font-bold rounded hover:bg-row1third hover:text-white transition-colors duration-200"
+            onClick={handleCollapse}
+          >
+            Previous <ChevronUp />
           </button>
         )}
       </div>

@@ -7,17 +7,15 @@ import {
   Eye,
 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import formatPrice from "../../utils/formatPrice";
 import DefaultButton from "../buttons/DefaultButton";
 
 function ProductDetailSection({ product }) {
+  const history = useHistory();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = [
-    `https://picsum.photos/id/${product.id + 10}/800/800`,
-    `https://picsum.photos/id/${product.id + 20}/800/800`,
-    `https://picsum.photos/id/${product.id + 30}/800/800`,
-    `https://picsum.photos/id/${product.id + 40}/800/800`,
+  const images = product.images?.map((img) => img.url) || [
+    `https://picsum.photos/id/${product?.id + 10}/800/800`,
   ];
   const totalImages = images.length;
 
@@ -51,15 +49,20 @@ function ProductDetailSection({ product }) {
       (product.discountPercantage * product.originalPrice) / 100;
   }
 
+  function handleGoBack() {
+    history.goBack();
+  }
+
   return (
     <section className="w-full">
       <div className="py-8 bg-[#FAFAFA]">
         <div className="w-4/5 mx-auto flex gap-2">
-          <Link to="/" className="font-bold text-black">
-            Home
-          </Link>
-          <ChevronRight className="text-gray-400" />
-          <p className="text-gray-400">Shop</p>
+          <button onClick={handleGoBack}>
+            <span className="flex gap-4">
+              <ChevronLeft size={24} />
+              Go Back
+            </span>
+          </button>
         </div>
         <div className="w-4/5 mx-auto flex lg:flex-row flex-col my-8">
           <div className="lg:w-1/2 w-full h-[500px]">
@@ -67,8 +70,8 @@ function ProductDetailSection({ product }) {
               <img
                 key={currentImageIndex}
                 src={images[currentImageIndex]}
-                alt={`${product.title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover object-center"
+                alt={`${product.name} - Image ${currentImageIndex + 1}`}
+                className="w-full h-full object-cover"
               />
               <button
                 onClick={handlePreviousImage}
@@ -86,15 +89,32 @@ function ProductDetailSection({ product }) {
               </button>
             </div>
             <div className="w-full h-[90px] flex justify-between">
-              <div className="bg-slate-950 w-1/5"></div>
-              <div className="bg-slate-800 w-1/5"></div>
-              <div className="bg-slate-700 w-1/5"></div>
-              <div className="bg-slate-600 w-1/5"></div>
+              {product?.images?.slice(0, 4).map((img, index) => (
+                <div
+                  key={index}
+                  className={`w-1/5 bg-gray-300 cursor-pointer ${
+                    currentImageIndex === index
+                      ? "border-2 border-blue-500"
+                      : ""
+                  }`}
+                  style={{
+                    backgroundImage: `url(${img.url})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                  onClick={() => setCurrentImageIndex(index)}
+                ></div>
+              ))}
+              {product?.images?.length > 4 && (
+                <div className="w-1/5 bg-gray-200 flex items-center justify-center text-gray-500">
+                  +{product.images.length - 4}
+                </div>
+              )}
             </div>
           </div>
           <div className="lg:w-1/2 w-full h-[500px]">
             <div className="w-4/5 mx-auto my-4 flex flex-col gap-2">
-              <h2 className="text-2xl font-semibold">{product.title}</h2>
+              <h2 className="text-2xl font-semibold">{product.name}</h2>
               <div className="flex items-center my-3">
                 {[1, 2, 3, 4, 5].map((starPosition) => (
                   <Star
@@ -111,7 +131,7 @@ function ProductDetailSection({ product }) {
                   />
                 ))}
                 <span className="ml-2 text-sm text-gray-800">
-                  ({product.reviewCount || 0} Reviews)
+                  ({product.sell_count || 0} Sold)
                 </span>
               </div>
               <div className="flex items-center gap-2 text-2xl">
@@ -122,7 +142,7 @@ function ProductDetailSection({ product }) {
                       : "text-gray-400"
                   }`}
                 >
-                  {formatPrice(product.originalPrice)}
+                  {formatPrice(product.price)}
                 </span>
                 {discountedPrice !== null && (
                   <span className="text-black font-bold">
@@ -132,14 +152,16 @@ function ProductDetailSection({ product }) {
               </div>
               <span className="flex items-center gap-2">
                 <p className="text-gray-600 font-semibold">Availability:</p>
-                {product.inStock ? (
-                  <p className="text-teal-600 font-bold">In Stock</p>
+                {product.stock > 0 ? (
+                  <p className="text-teal-600 font-bold">
+                    In Stock ({product.stock})
+                  </p>
                 ) : (
                   <p className="text-red-700 font-bold">Out of Stock</p>
                 )}
               </span>
               <p className="my-3 text-gray-600 font-semibold text-sm">
-                {product.desc}
+                {product.description}
               </p>
               <hr className="w-full mx-auto my-8 border-b border-gray-400" />
               <div className="flex gap-1.5 my-4">
@@ -153,17 +175,17 @@ function ProductDetailSection({ product }) {
               </div>
               <div className="flex gap-4">
                 <DefaultButton size="lg">
-                  <p className="text-sm">Select Options</p>
+                  <p className="text-sm">Add to Cart</p>
                 </DefaultButton>
                 <div className="flex items-center gap-3 text-gray-800">
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-red-600 hover:text-white transition-colors duration-200 shadow">
-                    <Heart size={20} />
+                    <Heart size={24} />
                   </div>
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-green-600 hover:text-white transition-colors duration-200 shadow">
-                    <ShoppingCart size={20} />
+                    <ShoppingCart size={24} />
                   </div>
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-slate-800 hover:text-white transition-colors duration-200 shadow">
-                    <Eye size={20} />
+                    <Eye size={24} />
                   </div>
                 </div>
               </div>

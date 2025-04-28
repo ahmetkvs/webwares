@@ -45,7 +45,7 @@ function TabbedInformationSection({ product }) {
           </button>
         </div>
         {activeTab === "description" ? (
-          <ProductDescriptionTab />
+          <ProductDescriptionTab product={product} />
         ) : activeTab === "additional" ? (
           <AdditionalInformationTab />
         ) : (

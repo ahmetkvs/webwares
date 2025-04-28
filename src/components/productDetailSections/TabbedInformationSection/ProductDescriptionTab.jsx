@@ -1,12 +1,6 @@
 import { Check } from "lucide-react";
 
-function ProductDescriptionTab() {
-  const placeholderImageUrl = "https://picsum.photos/id/1012/600/400";
-  const placeholderText1 =
-    "Behold! This marvel of modern engineering (or possibly just clever gluing) is guaranteed to solve at least 1.5 of your daily problems. Side effects may include sudden bursts of interpretive dance and an uncanny ability to find lost socks.";
-  const placeholderText2 =
-    "Crafted under the light of a full moon by artisanal squirrels, this item boasts features so advanced, we barely understand them ourselves. Use responsibly, or don't. We're not your supervisor.";
-
+function ProductDescriptionTab({ product }) {
   const features1 = [
     "Surprisingly aerodynamic",
     "Approved by 3 out of 4 dentists who moonlight as stunt doubles",
@@ -22,18 +16,16 @@ function ProductDescriptionTab() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
       <div className="md:col-span-1">
         <img
-          src={placeholderImageUrl}
+          src={product.images[0].url}
           alt="A surprisingly relevant placeholder"
           className="w-full h-auto object-cover rounded shadow"
         />
       </div>
 
       <div className="md:col-span-2 space-y-4">
-        <h3 className="text-xl font-semibold">
-          The Unfolding Saga of This Thingamajig
-        </h3>
-        <p className="text-gray-600">{placeholderText1}</p>
-        <p className="text-gray-600">{placeholderText2}</p>
+        <h3 className="text-xl font-semibold">{product.name}</h3>
+        <p className="text-gray-600">{product.description}</p>
+        <p className="text-gray-600">{product.description}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-4">
           <div>
             <h4 className="text-lg font-semibold mb-2">
