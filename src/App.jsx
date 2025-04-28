@@ -64,6 +64,12 @@ function App() {
         </DefaultLayout>
       </Route>
 
+      <Route path="/shop">
+        <DefaultLayout>
+          <ShopPage />
+        </DefaultLayout>
+      </Route>
+
       <Route path="/about">
         <DefaultLayout>
           <AboutUsPage />
