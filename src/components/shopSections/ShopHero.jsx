@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getTopRatedCategories } from "../../utils/formatCategories";
+import slugify from "../../utils/slugify.js";
 
 function ShopHero() {
   const originalCategories = useSelector(
@@ -26,9 +27,9 @@ function ShopHero() {
           {categories.map((category) => (
             <Link
               key={category.id}
-              to={`/shop/${category.gender.toLowerCase()}/${category.name.toLowerCase()}/${
-                category.id
-              }`}
+              to={`/shop/${slugify(category.gender)}/${slugify(
+                category.name
+              )}/${slugify(category.id)}`}
               className={`relative aspect-square overflow-hidden`}
             >
               <img

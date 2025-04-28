@@ -38,11 +38,11 @@ export function getTopRatedCategories(categories) {
   return formattedCategories;
 }
 
-export function findCategoryNameById(categories, id) {
+export function findCategoryById(categories, id) {
   const found = categories.find((category) => category.id === id);
   if (found) {
-    return found.title;
+    return found;
   } else {
-    return "TBD";
+    return { name: "TBD" };
   }
 }
