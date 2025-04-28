@@ -11,15 +11,15 @@ import {
 } from "lucide-react";
 import ProductCard from "../Cards/ClothingProductCard";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/product/productActions";
+import {
+  fetchProducts,
+  setFilter as setFilterAction,
+} from "../../redux/product/productActions";
 import { GridLoader, ScaleLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
 
-const ITEMS_PER_PAGE = 12;
-
 function ShopProductViewSection() {
   const { categoryId } = useParams();
-  //console.log(gender, categoryName, categoryId);
   const dispatch = useDispatch();
 
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
@@ -30,7 +30,9 @@ function ShopProductViewSection() {
 
   const fetchState = useSelector((state) => state.product.fetchState || []);
   const productList = useSelector((state) => state.product.productList || []);
-  const total = useSelector((state) => state.product.total || []);
+  const total = useSelector((state) => state.product.total || 0);
+  const limit = useSelector((state) => state.product.limit || 12);
+  const filterFromRedux = useSelector((state) => state.product.filter);
 
   const sortOptions = [
     { label: "Price: Low to High", value: "price:asc" },
@@ -49,23 +51,24 @@ function ShopProductViewSection() {
   }
 
   const totalProducts = total;
-  const totalPages = Math.ceil(productList.length / ITEMS_PER_PAGE);
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentProducts = productList.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(totalProducts / limit);
 
   const handleSortSelect = (optionValue) => {
     setSelectedSortOption(optionValue);
     setIsSortDropdownOpen(false);
+    setCurrentPage(1);
   };
 
   const handleFilterSubmit = () => {
+    dispatch(setFilterAction(filter.input));
     setFilter((prevFilter) => ({ ...prevFilter, text: prevFilter.input }));
+    setCurrentPage(1);
   };
 
   const handleFilterReset = () => {
+    dispatch(setFilterAction(""));
     setFilter({ input: "", text: "" });
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -75,14 +78,22 @@ function ShopProductViewSection() {
   };
 
   useEffect(() => {
-    const params = {};
+    const offset = (currentPage - 1) * limit;
+    const params = { limit, offset };
 
     if (categoryId) params.category = categoryId;
-    if (filter.text) params.filter = filter.text;
+    if (filterFromRedux) params.filter = filterFromRedux;
     if (selectedSortOption) params.sort = selectedSortOption;
 
     dispatch(fetchProducts(params));
-  }, [dispatch, categoryId, filter.text, selectedSortOption]);
+  }, [
+    dispatch,
+    categoryId,
+    filterFromRedux,
+    selectedSortOption,
+    currentPage,
+    limit,
+  ]);
 
   const gridViewClass =
     "w-4/5 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-16";
@@ -108,14 +119,16 @@ function ShopProductViewSection() {
   }
 
   const pageNumbersToDisplay = getPageNumbers();
+  const startIndex = (currentPage - 1) * limit + 1;
+  const endIndex = Math.min(currentPage * limit, totalProducts);
 
   return (
     <section className="w-full my-16">
       {/*Top Controls Bar Start*/}
       <div className="w-4/5 mx-auto flex flex-col lg:flex-row lg:justify-between items-center gap-y-8">
         <p className="text-sm text-gray-600">
-          Showing {Math.min(startIndex + 1, totalProducts)} -
-          {Math.min(endIndex, totalProducts)} of {totalProducts} results
+          Showing {fetchState === "FETCHED" ? startIndex : 0} -
+          {fetchState === "FETCHED" ? endIndex : 0} of {totalProducts} results
         </p>
         <div className="flex gap-2 items-center">
           <p>Views:</p>
@@ -200,7 +213,7 @@ function ShopProductViewSection() {
       <div className="my-16">
         {fetchState === "FETCHED" && (
           <div className={viewType === "grid" ? gridViewClass : listViewClass}>
-            {currentProducts.map((product) => {
+            {productList.map((product) => {
               return (
                 <ProductCard
                   key={product.id}

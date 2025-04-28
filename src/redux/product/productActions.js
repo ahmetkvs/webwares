@@ -55,10 +55,18 @@ export const fetchCategories = () => {
   };
 };
 
-export const fetchProducts = ({ category, sort, filter } = {}) => {
+export const fetchProducts = ({
+  category,
+  sort,
+  filter,
+  limit = 12,
+  offset = 0,
+} = {}) => {
   return async (dispatch) => {
     try {
       dispatch(setFetchState("FETCHING"));
+      dispatch(setLimit(limit));
+      dispatch(setOffset(offset));
 
       let query = "";
 
@@ -71,6 +79,7 @@ export const fetchProducts = ({ category, sort, filter } = {}) => {
       if (sort) {
         query += `sort=${sort}&`;
       }
+      query += `limit=${limit}&offset=${offset}&`;
 
       if (query[query.length - 1] === "&") {
         query = query.slice(0, -1);
