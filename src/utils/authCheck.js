@@ -1,7 +1,7 @@
 import { setUser, logoutUser } from "../redux/client/clientActions";
 import api from "../services/api";
 
-export async function verifyToken(dispatch) {
+export async function verifyTokenUser(dispatch) {
   const token = localStorage.getItem("token");
 
   if (!token) {

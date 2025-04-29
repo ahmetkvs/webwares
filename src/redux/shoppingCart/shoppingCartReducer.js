@@ -18,8 +18,8 @@ const persistedFavoritesState = loadStateFromLocalStorage("favorites");
 const initialState = {
   cart: persistedCartState || [],
   favorites: persistedFavoritesState || [],
-  payment: {},
-  address: {},
+  payment: [],
+  address: [],
 };
 
 function shoppingCartReducer(state = initialState, action) {

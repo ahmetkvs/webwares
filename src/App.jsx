@@ -11,14 +11,16 @@ import SignUpFormPage from "./pages/SignUpFormPage";
 import Login from "./pages/Login";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { verifyToken } from "./utils/authCheck";
+import { verifyTokenUser } from "./utils/authCheck";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    verifyToken(dispatch);
+    verifyTokenUser(dispatch);
   }, [dispatch]);
 
   return (
@@ -76,6 +78,12 @@ function App() {
           <AboutUsPage />
         </DefaultLayout>
       </Route>
+
+      <ProtectedRoute path="/order">
+        <DefaultLayout>
+          <OrderPage />
+        </DefaultLayout>
+      </ProtectedRoute>
 
       <Route path="/cart">
         <DefaultLayout>

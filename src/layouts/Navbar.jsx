@@ -76,6 +76,7 @@ function Navbar({ isHome }) {
 
   function handleLogout() {
     dispatch(logoutUser());
+    history.pushState("/");
   }
 
   useEffect(() => {
