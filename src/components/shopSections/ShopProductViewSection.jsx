@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProducts,
   setFilter as setFilterAction,
+  setLimit,
+  setOffset,
 } from "../../redux/product/productActions";
 import { GridLoader, ScaleLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
@@ -80,6 +82,9 @@ function ShopProductViewSection() {
   useEffect(() => {
     const offset = (currentPage - 1) * limit;
     const params = { limit, offset };
+
+    dispatch(setOffset(offset));
+    dispatch(setLimit(limit));
 
     if (categoryId) params.category = categoryId;
     if (filterFromRedux) params.filter = filterFromRedux;

@@ -38,23 +38,29 @@ function ShoppingCartPage() {
   };
 
   if (cartItems.length === 0) {
-    return <div className="py-6">Your cart is empty.</div>;
+    return (
+      <div className="py-6 flex h-96 justify-center items-center">
+        <p className="font-inter font-semibold text-xl">Your cart is empty</p>
+      </div>
+    );
   }
 
   return (
-    <section className="w-full py-16">
-      <div className="w-10/12 mx-auto flex lg:flex-row flex-col gap-y-12 lg:gap-x-8">
+    <section className="w-full py-8 sm:py-16">
+      <div className="w-11/12 sm:w-10/12 mx-auto flex lg:flex-row flex-col gap-y-8 lg:gap-x-8">
+        {/* Left Side: Cart Items List */}
         <div className="lg:w-7/12 w-full">
-          <h2 className="text-xl font-semibold py-4 px-6 bg-gray-100 border-b border-gray-200 rounded-t-md">
+          <h2 className="text-xl font-semibold py-4 px-4 bg-gray-100 border-b border-gray-200 rounded-t-md">
             Shopping Cart Items
           </h2>
           <div className="shadow-md rounded-b-md border-b border-l border-r border-gray-200">
             {cartItems.map((item) => (
               <div
                 key={item.product.id}
-                className="flex items-center py-4 px-6 border-b last:border-b-0"
+                className="flex flex-col sm:flex-row items-center py-4 px-4 border-b last:border-b-0"
               >
-                <div className="mr-4">
+                {/* Checkbox */}
+                <div className="mr-4 self-start sm:self-center">
                   <input
                     type="checkbox"
                     checked={item.checked}
@@ -64,8 +70,10 @@ function ShoppingCartPage() {
                     className="form-checkbox h-5 w-5 text-sky-500 transition duration-150 ease-in-out"
                   />
                 </div>
-                {item.product.images[0] && (
-                  <div className="w-20 h-20 mr-4 rounded overflow-hidden shadow-sm">
+
+                {/* Image */}
+                {item.product.images && item.product.images[0] && (
+                  <div className="w-24 h-24 mr-4 rounded overflow-hidden shadow-sm self-start">
                     <img
                       src={item.product.images[0].url}
                       alt={item.product.name}
@@ -73,7 +81,9 @@ function ShoppingCartPage() {
                     />
                   </div>
                 )}
-                <div className="flex-grow">
+
+                {/* Product Info */}
+                <div className="flex-grow mb-2 sm:mb-0">
                   <h3 className="font-semibold">{item.product.name}</h3>
                   {item.product.description && (
                     <p className="text-gray-600 text-sm">
@@ -91,40 +101,46 @@ function ShoppingCartPage() {
                     </p>
                   )}
                 </div>
-                <div className="flex items-center space-x-2 mr-4">
-                  <button
-                    onClick={() =>
-                      handleQuantityChange(item.product.id, item.count - 1)
-                    }
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-2 rounded disabled:opacity-50"
-                    disabled={item.count <= 1}
-                  >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.count}
-                    onChange={(e) =>
-                      handleQuantityChange(item.product.id, e.target.value)
-                    }
-                    className="w-14 text-center border border-gray-300 rounded"
-                  />
-                  <button
-                    onClick={() =>
-                      handleQuantityChange(item.product.id, item.count + 1)
-                    }
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-2 rounded"
-                  >
-                    +
-                  </button>
+
+                {/* Quantity and Price (Side-by-Side on Mobile) */}
+                <div className="flex items-center justify-between sm:flex-col w-full sm:w-auto">
+                  <div className="flex items-center space-x-2 mr-4">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.product.id, item.count - 1)
+                      }
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-2 rounded disabled:opacity-50 text-sm"
+                      disabled={item.count <= 1}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.count}
+                      onChange={(e) =>
+                        handleQuantityChange(item.product.id, e.target.value)
+                      }
+                      className="w-12 text-center border border-gray-300 rounded text-sm"
+                    />
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.product.id, item.count + 1)
+                      }
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-2 rounded text-sm"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div className="font-semibold text-lg ml-4 sm:ml-0 mt-2 sm:mt-0 w-20 text-right">
+                    ${(item.count * item.product.price).toFixed(2)}
+                  </div>
                 </div>
-                <div className="font-semibold text-right w-20">
-                  ${(item.count * item.product.price).toFixed(2)}
-                </div>
+
+                {/* Remove Button */}
                 <button
                   onClick={() => handleRemoveFromCart(item.product.id)}
-                  className="text-red-500 hover:text-red-700 focus:outline-none ml-4"
+                  className="text-red-500 hover:text-red-700 focus:outline-none ml-4 self-start sm:self-center"
                 >
                   <XCircle className="h-5 w-5" />
                 </button>
@@ -133,7 +149,7 @@ function ShoppingCartPage() {
           </div>
         </div>
 
-        {/* Right Side: Order Summary */}
+        {/* Right Side: Order Summary (Full Width on Mobile) */}
         <div className="lg:w-5/12 w-full shadow-md rounded-md border border-gray-200 p-6 lg:self-start">
           <h2 className="text-xl font-semibold mb-4 border-b pb-2">
             Order Summary
@@ -164,7 +180,7 @@ function ShoppingCartPage() {
                   disabled
                 />
                 <button
-                  className="ml-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-md focus:outline-none disabled:opacity-50"
+                  className="ml-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-md focus:outline-none disabled:opacity-50 text-sm"
                   disabled
                 >
                   Apply

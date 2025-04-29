@@ -16,7 +16,7 @@ function ProductCard({
   const categories = useSelector((state) => state.product.categories || []);
 
   const category = findCategoryById(categories, category_id);
-  console.log(category);
+  //console.log(category);
 
   let discountedPrice = null;
   if (typeof price === "number" && discountPercantage > 0) {
@@ -29,11 +29,6 @@ function ProductCard({
   const isList = variant === "list";
 
   const imgSrc = images?.[0]?.url || "https://picsum.photos/183/238?random=1";
-  console.log(
-    `/shop/${slugify(category.gender)}/${slugify(category.title)}/${slugify(
-      category.id
-    )}/${slugify(name)}/${slugify(id)}`
-  );
 
   return (
     <Link
