@@ -5,6 +5,7 @@ export const SET_ADDRESS = "SET_ADDRESS";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const REMOVE_FROM_FAVORITES = "REMOVE_FROM_FAVORITES";
 export const UPDATE_CART_ITEM_COUNT = "UPDATE_CART_ITEM_COUNT";
+export const SET_CART_ITEM_CHECKED = "SET_CART_ITEM_CHECKED";
 
 export const setCart = (cart) => ({
   type: SET_CART,
@@ -39,4 +40,9 @@ export const removeFromFavorites = (productId) => ({
 export const updateCartItemCount = (productId, count) => ({
   type: UPDATE_CART_ITEM_COUNT,
   payload: { productId, count },
+});
+
+export const setCartItemChecked = (productId, isChecked) => ({
+  type: SET_CART_ITEM_CHECKED,
+  payload: { productId, isChecked },
 });
