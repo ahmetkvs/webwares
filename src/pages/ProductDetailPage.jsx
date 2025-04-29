@@ -34,6 +34,7 @@ function ProductDetailPage() {
   }, [dispatch, productId, categoryId, gender]);
 
   const product = productList.find((p) => p.id === parseInt(productId));
+  const productListCopy = [...productList];
 
   if (loading) {
     return (
@@ -69,7 +70,7 @@ function ProductDetailPage() {
     <>
       <ProductDetailSection product={product} />
       <TabbedInformationSection product={product} />
-      <BestsellerProductsSection />
+      <BestsellerProductsSection productList={productListCopy} />
       <BrandLogosSection />
     </>
   );

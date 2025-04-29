@@ -14,18 +14,64 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/client/clientActions";
 import { fetchCategories } from "../redux/product/productActions";
 import { formatCategories } from "../utils/formatCategories";
+import ShoppingCartDropdown from "../components/dropDowns/ShoppingCartDropDown";
+import FavoritesDropdown from "../components/dropDowns/FavoritesDropDown";
 
 function Navbar({ isHome }) {
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const [isUSerDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isFavoritesDropdownOpen, setIsFavoritesDropdownOpen] = useState(false);
+  const [isShoppingCartDropdownOpen, setIsShoppingCartDropdownOpen] =
+    useState(false);
+
+  const favoritesCount = useSelector(
+    (state) => state.shoppingCart.favorites.length
+  );
+  const cartItemCount = useSelector((state) =>
+    state.shoppingCart.cart.reduce((sum, item) => sum + item.count, 0)
+  );
+
+  const closeAllDropdowns = () => {
+    setIsShopDropdownOpen(false);
+    setIsUserDropdownOpen(false);
+    setIsFavoritesDropdownOpen(false);
+    setIsShoppingCartDropdownOpen(false);
+    setIsMenuOpen(false);
+  };
 
   function toggleShopDropdown() {
-    setIsShopDropdownOpen((prevState) => !prevState);
+    if (isShopDropdownOpen) {
+      setIsShopDropdownOpen(false);
+    } else {
+      closeAllDropdowns();
+      setIsShopDropdownOpen(true);
+    }
   }
   function toggleUserDropdown() {
-    setIsUserDropdownOpen((prevState) => !prevState);
+    if (isUSerDropdownOpen) {
+      setIsUserDropdownOpen(false);
+    } else {
+      closeAllDropdowns();
+      setIsUserDropdownOpen(true);
+    }
+  }
+  function toggleFavoritesDropdown() {
+    if (isFavoritesDropdownOpen) {
+      setIsFavoritesDropdownOpen(false);
+    } else {
+      closeAllDropdowns();
+      setIsFavoritesDropdownOpen(true);
+    }
+  }
+  function toggleShoppingCartDropdown() {
+    if (isShoppingCartDropdownOpen) {
+      setIsShoppingCartDropdownOpen(false);
+    } else {
+      closeAllDropdowns();
+      setIsShoppingCartDropdownOpen(true);
+    }
   }
 
   function handleLogout() {
@@ -62,19 +108,23 @@ function Navbar({ isHome }) {
         {/* --- Left Section--- */}
         <div className="flex items-center">
           {/* Logo */}
-          <Link to="/">
+          <Link to="/" onClick={closeAllDropdowns}>
             <h1 className="font-oswald text-row1third font-semibold text-2xl mr-4 sm:mr-8">
               WebWares
             </h1>
           </Link>
 
           <div className="hidden lg:flex items-center gap-6">
-            <Link to="/" className="hover:text-black">
+            <Link
+              to="/"
+              className="hover:text-black"
+              onClick={closeAllDropdowns}
+            >
               Home
             </Link>
             <div className="relative">
               <div className="flex items-center gap-2">
-                <Link to="/shop">
+                <Link to="/shop" onClick={closeAllDropdowns}>
                   <span className="hover:text-black">Shop</span>
                 </Link>
                 <button
@@ -95,45 +145,65 @@ function Navbar({ isHome }) {
                   <div className="flex mx-2 my-2 font-inter text-lg font-semibold text-gray-500">
                     <div className="w-1/2 flex flex-col gap-2">
                       <h4 className="font-bold text-black mb-4">Female</h4>
-                      {splitCategories.female.map((category) => {
-                        return (
-                          <Link key={category.id} to={category.link}>
-                            <p className="hover:text-black hover:font-bold transition-colors duration-200">
-                              {category.title}
-                            </p>
-                          </Link>
-                        );
-                      })}
+                      {splitCategories.female.map((category) => (
+                        <Link
+                          key={category.id}
+                          to={category.link}
+                          onClick={closeAllDropdowns}
+                        >
+                          <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                            {category.title}
+                          </p>
+                        </Link>
+                      ))}
                     </div>
                     <div className="w-1/2 flex flex-col gap-2">
                       <h4 className="font-bold text-black mb-4">Male</h4>
-                      {splitCategories.male.map((category) => {
-                        return (
-                          <Link key={category.id} to={category.link}>
-                            <p className="hover:text-black hover:font-bold transition-colors duration-200">
-                              {category.title}
-                            </p>
-                          </Link>
-                        );
-                      })}
+                      {splitCategories.male.map((category) => (
+                        <Link
+                          key={category.id}
+                          to={category.link}
+                          onClick={closeAllDropdowns}
+                        >
+                          <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                            {category.title}
+                          </p>
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            <Link to="/about" className="hover:text-black">
+            <Link
+              to="/about"
+              className="hover:text-black"
+              onClick={closeAllDropdowns}
+            >
               About
             </Link>
-            <Link to="/blog" className="hover:text-black">
+            <Link
+              to="/blog"
+              className="hover:text-black"
+              onClick={closeAllDropdowns}
+            >
               Blog
             </Link>
-            <Link to="/contact" className="hover:text-black">
+            <Link
+              to="/contact"
+              className="hover:text-black"
+              onClick={closeAllDropdowns}
+            >
               Contact
             </Link>
-            <a href="#" className="hover:text-black">
+            <Link
+              to="#"
+              className="hover:text-black"
+              onClick={closeAllDropdowns}
+            >
               Pages
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -155,11 +225,17 @@ function Navbar({ isHome }) {
 
               {isUSerDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 z-50">
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    onClick={closeAllDropdowns}
+                  >
                     Profile
                   </button>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => {
+                      handleLogout();
+                      closeAllDropdowns();
+                    }}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   >
                     Logout
@@ -168,7 +244,7 @@ function Navbar({ isHome }) {
               )}
             </div>
           ) : (
-            <Link to="/login">
+            <Link to="/login" onClick={closeAllDropdowns}>
               <span className="flex items-center gap-2">
                 <User size={iconSize} />
                 <p className="text-sm hidden lg:block">Login / Register</p>
@@ -176,23 +252,39 @@ function Navbar({ isHome }) {
             </Link>
           )}
 
-          <span
-            className={`items-center cursor-pointer ${conditionalIconVisibility}`}
-          >
-            <Search size={iconSize} />
-          </span>
-          <span
-            className={`items-center gap-1 sm:gap-2 cursor-pointer ${conditionalIconVisibility}`}
-          >
-            <ShoppingCart size={iconSize} />
-            <p className="text-xs hidden lg:block">1</p>
-          </span>
-          <span
-            className={`items-center gap-1 sm:gap-2 cursor-pointer ${conditionalIconVisibility}`}
-          >
-            <Heart size={iconSize} />
-            <p className="hidden lg:block text-xs">1</p>
-          </span>
+          <div className="relative">
+            <span
+              className={`items-center cursor-pointer ${conditionalIconVisibility} relative`}
+              onClick={toggleShoppingCartDropdown}
+            >
+              <ShoppingCart size={iconSize} />
+              {cartItemCount > 0 && (
+                <span className="absolute top-[-0.5rem] right-[-0.5rem] bg-red-500 text-white rounded-full text-xs px-2 py-0.5">
+                  {cartItemCount}
+                </span>
+              )}
+            </span>
+            {isShoppingCartDropdownOpen && (
+              <ShoppingCartDropdown onClose={toggleShoppingCartDropdown} />
+            )}
+          </div>
+
+          <div className="relative">
+            <span
+              className={`items-center gap-1 sm:gap-2 cursor-pointer ${conditionalIconVisibility} relative`}
+              onClick={toggleFavoritesDropdown}
+            >
+              <Heart size={iconSize} />
+              {favoritesCount > 0 && (
+                <span className="absolute top-[-0.5rem] right-[-0.5rem] bg-red-500 text-white rounded-full text-xs px-2 py-0.5">
+                  {favoritesCount}
+                </span>
+              )}
+            </span>
+            {isFavoritesDropdownOpen && (
+              <FavoritesDropdown onClose={toggleFavoritesDropdown} />
+            )}
+          </div>
 
           <button onClick={toggleMenu} className="ml-1 sm:ml-2 block lg:hidden">
             {isMenuOpen ? <X size={iconSize} /> : <Menu size={iconSize} />}
@@ -203,12 +295,13 @@ function Navbar({ isHome }) {
       <div
         className={`
           ${isMenuOpen ? "block" : "hidden"}
-           lg:hidden mx-4 mb-4 bg-white rounded-md p-6 flex flex-col gap-4 items-center text-lg sm:text-xl font-semibold                       
+            lg:hidden mx-4 mb-4 bg-white rounded-md p-6 flex flex-col gap-4 items-center text-lg sm:text-xl font-semibold          
         `}
       >
         <Link
           to="/"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+          onClick={closeAllDropdowns}
         >
           Home
         </Link>
@@ -216,6 +309,7 @@ function Navbar({ isHome }) {
           <Link
             to="/shop"
             className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+            onClick={closeAllDropdowns}
           >
             Shop
           </Link>
@@ -232,27 +326,31 @@ function Navbar({ isHome }) {
               <div className="flex mx-2 my-2 font-inter text-lg font-semibold text-gray-500">
                 <div className="w-1/2 flex flex-col gap-2">
                   <h4 className="font-bold text-black mb-4">Female</h4>
-                  {splitCategories.female.map((category) => {
-                    return (
-                      <Link key={category.id} to={category.link}>
-                        <p className="hover:text-black hover:font-bold transition-colors duration-200">
-                          {category.title}
-                        </p>
-                      </Link>
-                    );
-                  })}
+                  {splitCategories.female.map((category) => (
+                    <Link
+                      key={category.id}
+                      to={category.link}
+                      onClick={closeAllDropdowns}
+                    >
+                      <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                        {category.title}
+                      </p>
+                    </Link>
+                  ))}
                 </div>
                 <div className="w-1/2 flex flex-col gap-2">
                   <h4 className="font-bold text-black mb-4">Male</h4>
-                  {splitCategories.male.map((category) => {
-                    return (
-                      <Link key={category.id} to={category.link}>
-                        <p className="hover:text-black hover:font-bold transition-colors duration-200">
-                          {category.title}
-                        </p>
-                      </Link>
-                    );
-                  })}
+                  {splitCategories.male.map((category) => (
+                    <Link
+                      key={category.id}
+                      to={category.link}
+                      onClick={closeAllDropdowns}
+                    >
+                      <p className="hover:text-black hover:font-bold transition-colors duration-200">
+                        {category.title}
+                      </p>
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
@@ -262,24 +360,28 @@ function Navbar({ isHome }) {
         <Link
           to="/about"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+          onClick={closeAllDropdowns}
         >
           About
         </Link>
         <Link
           to="/blog"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+          onClick={closeAllDropdowns}
         >
           Blog
         </Link>
         <Link
           to="/contact"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+          onClick={closeAllDropdowns}
         >
           Contact
         </Link>
         <Link
           to="#"
           className="block px-2 py-1 hover:bg-gray-100 rounded w-full text-center"
+          onClick={closeAllDropdowns}
         >
           Pages
         </Link>
@@ -288,29 +390,45 @@ function Navbar({ isHome }) {
             <a
               href="#"
               className="flex items-center gap-1 cursor-pointer hover:text-gray-600"
+              onClick={closeAllDropdowns}
             >
               <User size={mobileMenuIconSize} />
             </a>
             <a
               href="#"
               className="flex items-center cursor-pointer hover:text-gray-600"
+              onClick={closeAllDropdowns}
             >
               <Search size={mobileMenuIconSize} />
             </a>
-            <a
-              href="#"
-              className="flex items-center gap-1 cursor-pointer hover:text-gray-600"
-            >
-              <ShoppingCart size={mobileMenuIconSize} />
-              <p className="text-xs">1</p>
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-1 cursor-pointer hover:text-gray-600"
-            >
-              <Heart size={mobileMenuIconSize} />
-              <p className="text-xs">1</p>
-            </a>
+            <div className="relative">
+              <span
+                className="flex items-center gap-1 cursor-pointer hover:text-gray-600"
+                onClick={toggleShoppingCartDropdown}
+              >
+                <ShoppingCart size={mobileMenuIconSize} />
+                {cartItemCount > 0 && (
+                  <p className="text-xs">{cartItemCount}</p>
+                )}
+              </span>
+              {isShoppingCartDropdownOpen && (
+                <ShoppingCartDropdown onClose={toggleShoppingCartDropdown} />
+              )}
+            </div>
+            <div className="relative">
+              <span
+                className="flex items-center gap-1 cursor-pointer hover:text-gray-600"
+                onClick={toggleFavoritesDropdown}
+              >
+                <Heart size={mobileMenuIconSize} />
+                {favoritesCount > 0 && (
+                  <p className="text-xs">{favoritesCount}</p>
+                )}
+              </span>
+              {isFavoritesDropdownOpen && (
+                <FavoritesDropdown onClose={toggleFavoritesDropdown} />
+              )}
+            </div>
           </div>
         )}
       </div>

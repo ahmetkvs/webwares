@@ -5,15 +5,24 @@ import {
   Heart,
   ShoppingCart,
   Eye,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import formatPrice from "../../utils/formatPrice";
 import DefaultButton from "../buttons/DefaultButton";
+import { useDispatch } from "react-redux";
+import {
+  setCart,
+  setFavorites,
+} from "../../redux/shoppingCart/shoppingCartActions";
 
 function ProductDetailSection({ product }) {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageUrl, setModalImageUrl] = useState("");
   const images = product.images?.map((img) => img.url) || [
     `https://picsum.photos/id/${product?.id + 10}/800/800`,
   ];
@@ -27,6 +36,27 @@ function ProductDetailSection({ product }) {
   const handlePreviousImage = () => {
     const prevIndex = (currentImageIndex - 1 + totalImages) % totalImages;
     setCurrentImageIndex(prevIndex);
+  };
+
+  const openImageModal = () => {
+    setModalImageUrl(images[currentImageIndex]);
+    setIsModalOpen((prevState) => !prevState);
+  };
+
+  const closeImageModal = () => {
+    setIsModalOpen((prevState) => !prevState);
+    setModalImageUrl("");
+  };
+
+  const handleAddToCart = () => {
+    dispatch(setCart(product));
+    console.log("Added to Cart", product);
+  };
+
+  const handleAddToFavorites = () => {
+    const currentUrl = window.location.pathname;
+    dispatch(setFavorites({ product, url: currentUrl }));
+    console.log("Added to Favorites", { product, url: currentUrl });
   };
 
   if (!product) {
@@ -174,19 +204,45 @@ function ProductDetailSection({ product }) {
                 ))}
               </div>
               <div className="flex gap-4">
-                <DefaultButton size="lg">
+                <button
+                  onClick={handleAddToCart}
+                  className="bg-sky-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-sky-600 hover:text-black transition-colors duration-200"
+                >
                   <p className="text-sm">Add to Cart</p>
-                </DefaultButton>
+                </button>
                 <div className="flex items-center gap-3 text-gray-800">
-                  <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-red-600 hover:text-white transition-colors duration-200 shadow">
+                  <div
+                    onClick={handleAddToFavorites}
+                    className="bg-white p-2 rounded-full cursor-pointer hover:bg-red-600 hover:text-white transition-colors duration-200 shadow"
+                  >
                     <Heart size={24} />
                   </div>
                   <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-green-600 hover:text-white transition-colors duration-200 shadow">
                     <ShoppingCart size={24} />
                   </div>
-                  <div className="bg-white p-2 rounded-full cursor-pointer hover:bg-slate-800 hover:text-white transition-colors duration-200 shadow">
+                  <div
+                    onClick={openImageModal}
+                    className="bg-white p-2 rounded-full cursor-pointer hover:bg-slate-800 hover:text-white transition-colors duration-200 shadow"
+                  >
                     <Eye size={24} />
                   </div>
+                  {isModalOpen && (
+                    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
+                      <div className="bg-white rounded-md p-4 relative">
+                        <button
+                          onClick={closeImageModal}
+                          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                        >
+                          <X />
+                        </button>
+                        <img
+                          src={modalImageUrl}
+                          alt="Product Preview"
+                          className="max-w-full max-h-[80vh] object-contain"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

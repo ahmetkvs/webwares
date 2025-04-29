@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import DefaultButton from "../buttons/DefaultButton";
 
 function HeroSection() {
@@ -9,16 +10,18 @@ function HeroSection() {
         <div className="w-full lg:w-1/2 pt-8 flex flex-col gap-8 items-center justify-center  font-inter">
           <div className="flex flex-col gap-8 lg:items-start items-center">
             <h2 className="font-bold xl:text-lg text-sm text-black">
-              ABOUT COMPANY
+              SHOP HERE
             </h2>
             <h1 className="font-bold text-5xl xl:text-6xl font-montserrat text-black">
-              ABOUT US
+              WEBWARES
             </h1>
             <p className="font-semibold font-montserrat xl:text-lg text-gray-500">
               We know how large objects will act, <br /> but things on a small
               scale
             </p>
-            <DefaultButton size="lg">Get Quote Now</DefaultButton>
+            <DefaultButton size="lg">
+              <Link to="/shop">Shop Now</Link>
+            </DefaultButton>
           </div>
         </div>
         <div className="w-full lg:w-1/2 flex h-full flex-col  items-center">
