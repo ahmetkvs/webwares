@@ -16,11 +16,14 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const offset = useSelector((state) => state.product.offset || 0);
+  const limit = useSelector((state) => state.product.limit || 12);
+
   useEffect(() => {
     setLoading(true);
     setError(null);
 
-    const params = {};
+    const params = { limit, offset };
     if (categoryId) params.category = categoryId;
     if (gender) params.gender = gender;
 
@@ -31,8 +34,8 @@ function ProductDetailPage() {
         setLoading(false);
         console.error("Error fetching products:", err);
       });
-  }, [dispatch, productId, categoryId, gender]);
-
+  }, [dispatch, productId, categoryId, gender, offset, limit]);
+  console.log(productList);
   const product = productList.find((p) => p.id === parseInt(productId));
   const productListCopy = [...productList];
 

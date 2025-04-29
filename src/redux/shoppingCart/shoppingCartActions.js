@@ -1,3 +1,5 @@
+import api from "../../services/api";
+
 export const SET_CART = "SET_CART";
 export const SET_FAVORITES = "SET_FAVORITES";
 export const SET_PAYMENT = "SET_PAYMENT";
@@ -46,3 +48,91 @@ export const setCartItemChecked = (productId, isChecked) => ({
   type: SET_CART_ITEM_CHECKED,
   payload: { productId, isChecked },
 });
+
+export const fetchAddresses = () => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      const response = await api.get("/user/address", {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log(response.data);
+      dispatch(setAddress(response.data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const addAddress = (addressData) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      const response = await api.post("/user/address", addressData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log("Address Added:", response.data);
+      dispatch(fetchAddresses());
+    } catch (error) {
+      console.error("Error adding address: ", error);
+    }
+  };
+};
+
+export const updateAddress = (addressId, addressData) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      const response = await api.put("/user/address", addressData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log("Address Updated:", response.data);
+      dispatch(fetchAddresses());
+    } catch (error) {
+      console.error(`Error updating address with ID ${addressId}: `, error);
+    }
+  };
+};
+
+export const deleteAddress = (addressId) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      await api.delete(`/user/address/${addressId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log(`Address with ID ${addressId} deleted.`);
+      dispatch(fetchAddresses());
+    } catch (error) {
+      console.error(`Error deleting address with ID ${addressId}: `, error);
+    }
+  };
+};
