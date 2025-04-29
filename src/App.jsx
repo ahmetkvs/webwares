@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { verifyToken } from "./utils/authCheck";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -73,6 +74,12 @@ function App() {
       <Route path="/about">
         <DefaultLayout>
           <AboutUsPage />
+        </DefaultLayout>
+      </Route>
+
+      <Route path="/cart">
+        <DefaultLayout>
+          <ShoppingCartPage />
         </DefaultLayout>
       </Route>
 

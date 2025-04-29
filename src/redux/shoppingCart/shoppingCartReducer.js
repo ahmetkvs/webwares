@@ -74,6 +74,14 @@ function shoppingCartReducer(state = initialState, action) {
       }
       return state;
     }
+    case "SET_CART_ITEM_CHECKED": {
+      const { productId, isChecked } = action.payload;
+      const updatedCart = state.cart.map((item) =>
+        item.product.id === productId ? { ...item, checked: isChecked } : item
+      );
+      saveStateToLocalStorage("cart", updatedCart);
+      return { ...state, cart: updatedCart };
+    }
     case REMOVE_FROM_CART: {
       const productIdToRemove = action.payload;
       updatedCart = state.cart.filter(
