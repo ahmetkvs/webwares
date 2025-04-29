@@ -1,19 +1,9 @@
-import React, { useEffect } from "react";
 import ProductCard from "../Cards/ClothingProductCard";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/product/productActions";
+import { useSelector } from "react-redux";
 import { GridLoader } from "react-spinners";
 
-function BestsellerProductsSection() {
-  const dispatch = useDispatch();
-  const bestsellerProducts = useSelector(
-    (state) => state.product.productList || []
-  );
+function BestsellerProductsSection({ productList }) {
   const fetchState = useSelector((state) => state.product.fetchState);
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
 
   return (
     <section className="w-full my-32">
@@ -30,7 +20,7 @@ function BestsellerProductsSection() {
               Failed to load bestseller products.
             </div>
           ) : (
-            bestsellerProducts.map((product) => (
+            productList.map((product) => (
               <ProductCard
                 key={product.id}
                 id={product.id}
