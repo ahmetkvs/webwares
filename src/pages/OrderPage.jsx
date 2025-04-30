@@ -29,7 +29,6 @@ function OrderPage() {
     <section className="w-full">
       <div className="w-4/5 my-16 mx-auto flex justify-between">
         <div className="lg:w-8/12 w-full">
-          {/* Tabbing UI (you'll implement this) */}
           <div className="flex border-b">
             <button
               className={`py-2 px-4 ${

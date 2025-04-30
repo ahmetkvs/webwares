@@ -136,3 +136,93 @@ export const deleteAddress = (addressId) => {
     }
   };
 };
+
+export const fetchCards = () => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+      }
+      const response = await api.get("/user/card", {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log("Fetched Cards: ", response.data);
+      dispatch(setPayment(response.data));
+    } catch (error) {
+      console.error("Error fetching cards: ", error);
+    }
+  };
+};
+
+export const addCard = (cardData) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      const response = await api.post("/user/card", cardData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log("Card Added:", response.data);
+      dispatch(fetchCards());
+    } catch (error) {
+      console.error("Error adding card:", error);
+    }
+  };
+};
+
+export const updateCard = (cardId, cardData) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      const response = await api.put(
+        "/user/card",
+        { id: cardId, ...cardData },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log("Card Updated:", response.data);
+      dispatch(fetchCards());
+    } catch (error) {
+      console.error(`Error updating card with ID ${cardId}:`, error);
+    }
+  };
+};
+
+export const deleteCard = (cardId) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+
+      await api.delete(`/user/card/${cardId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log(`Card with ID ${cardId} deleted.`);
+      dispatch(fetchCards());
+    } catch (error) {
+      console.error(`Error deleting card with ID ${cardId}:`, error);
+    }
+  };
+};
