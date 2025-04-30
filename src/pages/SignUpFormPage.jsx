@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchRoles } from "../redux/client/clientActions";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import { toast } from "react-toastify";
 
 function SignUpFormPage() {
   const dispatch = useDispatch();
@@ -35,10 +36,14 @@ function SignUpFormPage() {
   });
 
   useEffect(() => {
+    toast.info("Toast is working!");
+  }, []);
+
+  useEffect(() => {
     if (!roles || roles.length === 0) {
       dispatch(fetchRoles());
     }
-  }, []);
+  }, [dispatch, roles]);
 
   const passwordValue = watch("password");
   const confirmPasswordValue = watch("confirmPassword");
@@ -67,19 +72,22 @@ function SignUpFormPage() {
   async function onSubmit(data) {
     console.log(data);
     const formattedData = formatSignUpData(data);
-    console.log(formattedData);
     setIsSubmitting(true);
 
     try {
-      const formattedData = formatSignUpData(data);
       const response = await api.post("/signup", formattedData);
-
       console.log("Registration success: ", response.data);
-
-      //redirect
+      toast.success("Sign up success");
+      toast.info("Please activate your account.", { autoClose: 10000 });
       history.push("/login");
     } catch (err) {
-      console.log("Registration error: ", err);
+      const errorMessage =
+        err?.response?.data?.message || "An unexpected error occurred.";
+      toast.error(
+        errorMessage,
+        "Email address may already exists, please try a new one."
+      );
+      console.error("Registration error:", err);
     } finally {
       setIsSubmitting(false);
     }
