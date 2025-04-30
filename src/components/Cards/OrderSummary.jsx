@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
-function OrderSummary({ totalPrice = "0.00", onKeepShopping }) {
-  const history = useHistory();
-
-  const handleOrderPageRouting = () => {
-    history.push("/order");
-  };
-
+function OrderSummary({
+  totalPrice = "0.00",
+  onKeepShopping,
+  onProceedToOrder,
+}) {
   return (
     <div className="shadow-md rounded-md border border-gray-200 p-6">
       <h2 className="text-xl font-semibold mb-4 border-b pb-2">
@@ -53,7 +50,7 @@ function OrderSummary({ totalPrice = "0.00", onKeepShopping }) {
           <span>${totalPrice}</span>
         </div>
         <button
-          onClick={handleOrderPageRouting}
+          onClick={onProceedToOrder}
           className="bg-sky-500 hover:bg-sky-700 w-full text-white font-semibold py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
         >
           Proceed to Order

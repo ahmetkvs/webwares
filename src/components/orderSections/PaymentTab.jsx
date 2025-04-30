@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { CreditCard, PlusCircle, Trash2, Edit } from "lucide-react";
+import {
+  CreditCard,
+  PlusCircle,
+  Trash2,
+  Edit,
+  CheckCircle,
+} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCards,
@@ -8,16 +14,23 @@ import {
 import AddCardModal from "./AddCardModal";
 import EditCardModal from "./EditCardModal";
 
-function PaymentTab() {
+function PaymentTab({ onPaymentSelect }) {
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.shoppingCart.payment);
   const [isAddCardModalOpen, setAddCardModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState(null);
   const [isEditCardModalOpen, setEditCardModalOpen] = useState(false);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
   useEffect(() => {
     dispatch(fetchCards());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (cards?.length > 0 && cards[selectedCardIndex]?.id) {
+      onPaymentSelect(cards[selectedCardIndex].id);
+    }
+  }, [selectedCardIndex, cards, onPaymentSelect]);
 
   const handleDeleteClick = (cardId) => {
     if (window.confirm("Are you sure you want to delete this card?")) {
@@ -49,11 +62,19 @@ function PaymentTab() {
               Saved Cards
             </h3>
             <ul className="space-y-2">
-              {cards.map((card) => (
+              {cards.map((card, index) => (
                 <li
                   key={card.id}
-                  className="border rounded-md p-3 flex items-center justify-between"
+                  className={`border rounded-md p-3 flex items-center justify-between cursor-pointer relative transition-all duration-200 ${
+                    selectedCardIndex === index
+                      ? "border-sky-600 bg-sky-50"
+                      : "border-gray-300"
+                  }`}
+                  onClick={() => setSelectedCardIndex(index)}
                 >
+                  {selectedCardIndex === index && (
+                    <CheckCircle className="absolute bottom-2 right-2 text-sky-600" />
+                  )}
                   <div className="flex items-center gap-3">
                     <CreditCard className="w-6 h-6 text-gray-500" />
                     <div>
