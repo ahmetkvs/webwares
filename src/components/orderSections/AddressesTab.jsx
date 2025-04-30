@@ -8,7 +8,8 @@ import {
   updateAddress,
 } from "../../redux/shoppingCart/shoppingCartActions";
 
-export default function AddressTab() {
+export default function AddressTab({ onAddressSelect }) {
+  // Added onAddressSelect prop
   const dispatch = useDispatch();
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -20,6 +21,12 @@ export default function AddressTab() {
   useEffect(() => {
     dispatch(fetchAddresses());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (addressList?.length > 0 && addressList[selectedAddressIndex]?.id) {
+      onAddressSelect(addressList[selectedAddressIndex].id);
+    }
+  }, [selectedAddressIndex, addressList, onAddressSelect]);
 
   const handleEditClick = (address) => {
     setEditingAddress({ ...address });
@@ -39,8 +46,6 @@ export default function AddressTab() {
       dispatch(deleteAddress(addressId));
     }
   };
-
-  console.log(addressList);
 
   return (
     <div className="flex-1">
