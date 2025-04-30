@@ -8,7 +8,7 @@ import {
   X,
   ChevronDown,
 } from "lucide-react";
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Gravatar from "react-gravatar";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/client/clientActions";
@@ -18,6 +18,7 @@ import ShoppingCartDropdown from "../components/dropDowns/ShoppingCartDropDown";
 import FavoritesDropdown from "../components/dropDowns/FavoritesDropDown";
 
 function Navbar({ isHome }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
@@ -74,9 +75,14 @@ function Navbar({ isHome }) {
     }
   }
 
+  function onOrdersClick() {
+    closeAllDropdowns();
+    history.push("/prev-orders");
+  }
+
   function handleLogout() {
     dispatch(logoutUser());
-    history.pushState("/");
+    history.push("/");
   }
 
   useEffect(() => {
@@ -228,9 +234,9 @@ function Navbar({ isHome }) {
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 z-50">
                   <button
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                    onClick={closeAllDropdowns}
+                    onClick={onOrdersClick}
                   >
-                    Profile
+                    Orders
                   </button>
                   <button
                     onClick={() => {
