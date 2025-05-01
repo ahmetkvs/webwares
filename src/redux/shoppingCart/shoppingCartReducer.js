@@ -11,6 +11,7 @@ import {
   saveStateToLocalStorage,
   loadStateFromLocalStorage,
 } from "../../utils/localStorage";
+import { CLEAR_CART } from "../product/productActions";
 
 const persistedCartState = loadStateFromLocalStorage("cart");
 const persistedFavoritesState = loadStateFromLocalStorage("favorites");
@@ -98,6 +99,9 @@ function shoppingCartReducer(state = initialState, action) {
       saveStateToLocalStorage("favorites", updatedFavorites);
       return { ...state, favorites: updatedFavorites };
     }
+    case CLEAR_CART:
+      localStorage.removeItem("cart");
+      return { ...state, cart: [] };
     case SET_PAYMENT:
       return { ...state, payment: action.payload };
     case SET_ADDRESS:

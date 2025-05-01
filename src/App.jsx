@@ -16,6 +16,7 @@ import ShoppingCartPage from "./pages/ShoppingCartPage";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import OrderPage from "./pages/OrderPage";
 import { ToastContainer } from "react-toastify";
+import PrevOrdersPage from "./pages/PrevOrdersPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -85,6 +86,12 @@ function App() {
         <ProtectedRoute path="/order">
           <DefaultLayout>
             <OrderPage />
+          </DefaultLayout>
+        </ProtectedRoute>
+
+        <ProtectedRoute path="/prev-orders">
+          <DefaultLayout>
+            <PrevOrdersPage />
           </DefaultLayout>
         </ProtectedRoute>
 
