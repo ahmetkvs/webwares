@@ -37,6 +37,10 @@ function ShoppingCartPage() {
     history.push("/shop");
   }
 
+  function handleProceedToOrder() {
+    history.push("/order");
+  }
+
   const calculateTotalPrice = () => {
     return cartItems
       .reduce((total, item) => {
@@ -163,6 +167,7 @@ function ShoppingCartPage() {
           <OrderSummary
             totalPrice={calculateTotalPrice()}
             onKeepShopping={handleShopRoute}
+            onProceedToOrder={handleProceedToOrder}
           />
         </div>
       </div>
