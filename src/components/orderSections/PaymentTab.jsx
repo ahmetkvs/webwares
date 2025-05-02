@@ -44,7 +44,7 @@ function PaymentTab({ onPaymentSelect }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="">
       <div className="bg-row3sec text-white p-4 rounded-t-md font-semibold">
         Payment Methods
       </div>
@@ -58,9 +58,6 @@ function PaymentTab({ onPaymentSelect }) {
 
         {cards?.length > 0 ? (
           <div>
-            <h3 className="text-lg font-semibold mb-2 text-gray-700">
-              Saved Cards
-            </h3>
             <ul className="space-y-2">
               {cards.map((card, index) => (
                 <li
